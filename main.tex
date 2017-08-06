@@ -32,6 +32,7 @@
 \newcommand{\PI}{3.14156}
 \newcommand\mybox[2][]{\tikz[overlay]\node[fill=blue!20,inner sep=2pt, anchor=text, rectangle, rounded corners=1mm,#1] {#2};\phantom{#2}}
 \newcommand{\host}{\mybox{\bf Host} }
+\newcommand{\tub}[2]{$\underbrace{#1}_{#2}$}
 
 \title{Rechnernetze Zusammenfassung}
 \author{
@@ -292,6 +293,7 @@ Die Sicherungsschicht ist für Medium Access Control und Logical Link Control zu
     \item[Erkennbare Fehler:] $f_e = d_{min}-1$
     \item[Korrigierbare Fehler:] $f_k = \left\lfloor \frac{d_{min}-1}{2} \right\rfloor$
     \item[Kreuzsicherung] Je eine Spalte und eine Zeile einer Matrix mit Paritätsbit ermöglichen Fehlererkennung in einer Matrix.
+    \item[Cycling Redundancy Check (CRC)] r = grad g(x), r*0 Bits an Datenpolynom $P_D$ anhängen, $P_D x^r : g(x)$ $=>$ Rest an $P_D$ anhängen = Sendesequenz $P_E$ \\Kontrolle: $P_E$ : g(x) mit Rest = 0 $=>$ korrekte Übertragung
 \end{description}
 
 \subsection{Ethernet}
@@ -402,6 +404,53 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
     \item[STM:] Synchronous Transfer Mode
     \item[SPE:] Synchronous Payload Envelope
 \end{description}
+
+\section{Vermittlungsschicht}
+\subsection{Dijkstra}
+\begin{center}
+    TODO: Algorithmus beschreiben
+\end{center}
+
+\subsection{IP}
+\begin{description}
+    \item[IPv4:] 32 bit
+    \item[IPv6:] 128 bit
+\end{description}
+\begin{tikzpicture}[
+    node distance=-\pgflinewidth,
+    ttt/.style={inner sep=0.1,outer sep=0, font=\tt\footnotesize},
+    every node/.style={font=\footnotesize}
+]
+    \node[ttt] (ip) {10.42.23.1} ;
+    \node[left=of ip] (cidr) {CIDR Notation:};
+    \node[right=of ip, ttt] (slash) {/};
+    \node[right=of slash, ttt] (nms) {22};
+    
+    \node[ttt, anchor=west] (nmo) at ($(nms) + (2.5,-0.5)$) {11111111.11111111.111111};
+    \node[left=of nmo] (nml) {Netzmaske:};
+    \node[right=of nmo, ttt] (nmz) {00.00000000};
+    \node[ttt, anchor=west] at ($(nmz.east) + (0.2,0)$) { = 255.255.252.0};
+    
+    \node[ttt, anchor=west] (ipb) at ($(nms) + (2.5,-1)$) {00001010.00101010.00010111.00000001};
+    \node[left=of ipb] (ipl) {IP:};
+    \node[ttt, anchor=west] at ($(ipb.east) + (0.2,0)$) { = 10.42.23.1};
+    
+    \draw  ($(ipb.south west) + (0,-0.3)$) node[left] {\bf \&} --($(ipb.south east) + (0,-0.3)$);
+    
+    \node[ttt, anchor=west] (sna) at ($(nms) + (2.5,-1.8)$) {00001010.00101010.00010100.00000000};
+    \node[left=of sna] {Subnetzadresse:};
+    \node[ttt, anchor=west] at ($(sna.east) + (0.2,0)$) { = 10.42.20.0};
+    
+    \draw[decoration={brace,raise=2pt},decorate] (nmo.north west) -- (nmo.north east);
+    \draw[->] (nms.east) -| ($(nmo.north) + (0,0.2)$);
+    
+    \draw[decoration={brace,raise=2pt,mirror},decorate] (ip.south west) -- (ip.south east);
+    \draw[->] ($(ip.south) + (0,-0.2)$) |- (ipl.west);
+\end{tikzpicture}
+
+\begin{center}
+    TODO: IP-Paket zeichnen
+\end{center}
 
 \section{Transportschicht}
 
