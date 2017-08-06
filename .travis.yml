@@ -5,8 +5,6 @@ before_install:
 - sudo apt-get install texlive-latex-extra latexmk texlive-lang-german
 
 script:
-- git checkout gh-pages
-- git reset --hard origin/master
 - latexmk -pdf -interaction=nonstopmode main.tex
 - git add -f main.pdf
 - git commit -m "build pdf"
