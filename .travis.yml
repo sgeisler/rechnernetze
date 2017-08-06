@@ -1,0 +1,13 @@
+sudo: required
+
+before_install:
+- sudo apt-get update 
+- sudo apt-get install texlive-latex-extra latexmk texlive-lang-german
+
+script:
+- git checkout gh-pages
+- git reset --hard origin/master
+- latexmk -pdf -interaction=nonstopmode main.tex
+- git add -f main.pdf
+- git commit -m "build pdf"
+- git push -f https://sgeisler:$GITHUB_TOKEN@github.com/sgeisler/rechnernetze.git HEAD:gh-pages

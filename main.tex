@@ -1,0 +1,657 @@
+\documentclass[a4paper]{article}
+% For UTF-8 encoding
+\usepackage[utf8]{inputenc}
+% For reverse enumerations
+\usepackage{etaremune}
+% Fopr fancy figures
+\usepackage{tikz}
+% For curly braces in itemize
+\usepackage{picture}
+% For \underbrace, \text, etc.
+\usepackage{amsmath}
+% For \bfseries
+\usepackage{array}
+% For clickable links
+\usepackage{hyperref}
+% descriptions without indentation after newline
+\usepackage{enumitem}
+% For proper hyphenation etc.
+\usepackage[german]{babel}
+
+% für Kodierungs-Zeichnungen
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.9}
+
+% Set page margins
+\usepackage[top=2cm, bottom=2cm, left=3cm, right=3cm]{geometry}
+
+\usetikzlibrary{shapes, calc, decorations.pathreplacing, arrows, positioning}
+
+\newcommand{\hs}[1]{\hspace{#1}}
+\newcommand{\sphantom}{\vphantom{\text{/}}}
+\newcommand{\PI}{3.14156}
+\newcommand\mybox[2][]{\tikz[overlay]\node[fill=blue!20,inner sep=2pt, anchor=text, rectangle, rounded corners=1mm,#1] {#2};\phantom{#2}}
+\newcommand{\host}{\mybox{\bf Host} }
+
+\title{Rechnernetze Zusammenfassung}
+\author{
+    sgeisler\\\href{mailto:sgeisler@wh2.tu-dresden.de}{\tt sgeisler@wh2.tu-dresden.de} 
+    \and
+    chlewe\\\href{mailto:ch\_lewe@wh2.tu-dresden.de}{\tt ch\_lewe@wh2.tu-dresden.de}
+}
+\date{August 2017}
+
+\begin{document}
+
+\maketitle
+\section{Allgemeines}
+\[
+    K_n = (V, E) \hs{2mm} \Rightarrow \hs{2mm} |E| = \frac{n \cdot (n-1)}{2}
+\]
+\begin{description}
+    \item[Dienst] Schnittstelle zwischen OSI-Schichten, definiert erbrachte Funktionalität einer Schicht.
+    \item[Protokoll] Regeln zur Ablaufsteuerung von Kommunikation in einer Schicht.
+\end{description}
+\subsection{OSI-Schichten}
+\begin{etaremune}
+    \item Anwendungsschicht (RPC, FTP, E-Mail)
+    \item Darstellungsschicht (ASCII, MP3, RSA)
+    \makebox(0,0){\put(0,2.2\normalbaselineskip){%
+               $\left.\rule{0pt}{2.2\normalbaselineskip}\right\}$ \shortstack{auch insgesamt als Anwendungsschicht\\ (Layer 5) bezeichnet}}}
+    \item Sitzungsschicht (Transaktionshandling)
+    \item Transportschicht (TCP, UDP)
+    \item Vermittlungsschicht (IP)
+    \item Sicherungsschicht (Ethernet)
+    \item Bitübertragungsschicht (Umsetzung in elektrische Signale)
+\end{etaremune}
+
+\subsection{Sequenzdiagramme}
+\begin{description}
+    \item[Req:] Request, von Client gesendet
+    \item[Ind:] Indication, von Server empfagener Request
+    \vspace{2mm}
+    \item[Rsp:] Response, von Server gesendet
+    \item[Cnf:] Confirmation, von Client empfangene Response
+\end{description}
+
+\subsection{OSI-Schichtenarchitektur}
+\begin{minipage}{0.75\textwidth}
+    \begin{tikzpicture}[
+        block/.style={rectangle, draw=black!50, thick, fill=blue!30},
+        split/.style={rectangle split, rectangle split horizontal, rectangle split parts=2}
+    ]
+        \draw (0,0) -- (8, 0) -- (8, -8) -- (0, -8) -- (0,0);
+        \draw[line width=1mm, dashed] (0, -3) -- (8, -3);
+        \node[circle, minimum size=0.5, draw=black, fill=blue!30] (sap) at (4, -3) {SAP};
+        \node[block, text width=2cm, text centered, split] (idu) at (4, -1.5) {
+            ICI
+            \nodepart{two} SDU
+        };
+        \draw[->, line width=0.5mm] (idu.south) -- (sap.north);
+        \node[block, text width=2cm, text centered] (bici) at (2, -5) {ICI};
+        \draw [->, line width=0.5mm] (sap.south west) -- (bici.north);
+        \node[block, text width=2cm, text centered] (bsdu) at (6, -5) {SDU};
+        \draw [->, line width=0.5mm] (sap.south east) -- (bsdu.north);
+        
+        \node[block, text width=2cm, text centered, split] (npdu) at ($(bsdu.south west) + (0,-1)$) {
+            Header
+            \nodepart{two} SDU
+        };
+        \draw[->, line width=0.5mm] (bsdu.south) -- (npdu.two north);
+        
+        \draw[decoration={brace,raise=2pt},decorate] (idu.north west) -- node[above=6pt] {IDU} (idu.north east);
+        \draw[decoration={brace,raise=2pt, mirror},decorate] (npdu.south west) -- node[below=6pt] {N-PDU} (npdu.south east);
+        
+        \draw[decoration={brace,raise=4pt},decorate] (8,0) -- node[right=6pt] {Schicht $N+1$} (8,-2.95);
+        \draw[decoration={brace,raise=4pt},decorate] (8,-3.05) -- node[right=6pt] {Schicht $N$} (8,-8);
+    \end{tikzpicture}
+\end{minipage}
+\begin{minipage}{0.25\textwidth}
+    \begin{description}[style=unboxed,leftmargin=0cm]
+        \item[IDU:]\hfill\\Interface Data Unit
+        \item[ICI:]\hfill\\Interface Control Information
+        \item[SDU:]\hfill\\Service Data Unit
+        \item[PDU:]\hfill\\Protocol Data Unit
+        \item[SAP:]\hfill\\Service Access Point
+    \end{description}
+\end{minipage}
+
+
+\section{Bitübertragungsschicht}
+\subsection{IKT-Wiederholung}
+\begin{minipage}[t]{0.5\textwidth}
+    \begin{description}
+        \item[SNR:] Signal-Rausch-Abstand
+        \item[SR:] Symbolrate
+        \item[S:] Symbolstufen
+        \item[IG:] Informationsgehalt
+    \end{description}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+    \begin{description}
+        \item[B:] Bandbreite
+        \item[$f_g$:] Grenzfrequenz
+        \item[$f_a$:] Abtastfrequenz
+    \end{description}
+\end{minipage}
+
+\begin{align*}
+    \text{SNR}_{\text{dB}} &= 10 \cdot \log_{10}(\text{SNR}) \hspace{5mm} \Rightarrow \hspace{5mm} \text{SNR} = 10^{\frac{\text{SNR}_{\text{dB}}}{10}}\\
+    \text{IG} &= \log_2(\text{S})\\
+    f_g &\leq \frac{f_a}{2} 
+\end{align*}
+\begin{description}
+    \item[Nyquist-Theorem:] $b < 2\cdot B \cdot \log_2{\text{S}}$
+    \item[Erweiterung durch Shannon:] $b < B \cdot \log_2(1 + \text{SNR})$
+\end{description}
+\[
+    B > \frac{b}{\log_2(1+\text{SNR})} \text{ und } B > \frac{\text{SR}}{2} \Rightarrow B > \max(\frac{b}{\log_2(1+\text{SNR})}, \frac{\text{SR}}{2})
+\]
+
+\subsection{Modulationsarten}
+\begin{tikzpicture}
+    \draw[line width=0.5mm, smooth, samples=100, domain=0:2.4*\PI] plot (\x,{0.3*sin(\x*10 r)+0.1}) node[right] {Trägerfrequenz};
+    
+    \draw[line width=0.5mm] (0,-1)--(0.4*\PI,-1)--(0.4*\PI,-0.6)--(0.8*\PI,-0.6)--(0.8*\PI,-1)--(1.6*\PI,-1)--(1.6*\PI,-0.6)--(2*\PI,-0.6)--(2*\PI,-1)--(2.4*\PI,-1) node[right] {Signal};
+    
+    \draw[line width=0.5mm, smooth, samples=100, domain=0:0.4*\PI] plot (\x,{0.3*sin(\x*10 r)-2});
+    \draw[line width=0.5mm, smooth, samples=100, domain=0.4*\PI:0.8*\PI] plot (\x,{0.6*sin(\x*10 r)-2});
+    \draw[line width=0.5mm, smooth, samples=100, domain=0.8*\PI:1.6*\PI] plot (\x,{0.3*sin(\x*10 r)-2});
+    \draw[line width=0.5mm, smooth, samples=100, domain=1.6*\PI:2*\PI] plot (\x,{0.6*sin(\x*10 r)-2});
+    \draw[line width=0.5mm, smooth, samples=100, domain=2*\PI:2.4*\PI] plot (\x,{0.3*sin(\x*10 r)-2}) node[right] {Amplitudenmodulation};
+    
+    \draw[line width=0.5mm, smooth, samples=100, domain=0:0.4*\PI] plot (\x,{0.3*sin(\x*10 r)-3.4});
+    \draw[line width=0.5mm, smooth, samples=100, domain=0.4*\PI:0.8*\PI] plot (\x,{0.3*sin(\x*20 r)-3.4});
+    \draw[line width=0.5mm, smooth, samples=100, domain=0.8*\PI:1.6*\PI] plot (\x,{0.3*sin(\x*10 r)-3.4});
+    \draw[line width=0.5mm, smooth, samples=100, domain=1.6*\PI:2*\PI] plot (\x,{0.3*sin(\x*20 r)-3.4});
+    \draw[line width=0.5mm, smooth, samples=100, domain=2*\PI:2.4*\PI] plot (\x,{0.3*sin(\x*10 r)-3.4}) node[right] {Frequenzmodulation};
+    
+    \draw[line width=0.5mm, smooth, samples=100, domain=0:0.4*\PI] plot (\x,{0.3*sin(\x*10 r)-4.8});
+    \draw[line width=0.5mm, smooth, samples=100, domain=0.5*\PI:0.9*\PI] plot (\x-\PI*0.1,{0.3*sin(\x*10 r)-4.8});
+    \draw[line width=0.5mm, smooth, samples=100, domain=0.8*\PI:1.6*\PI] plot (\x,{0.3*sin(\x*10 r)-4.8});
+    \draw[line width=0.5mm, smooth, samples=100, domain=1.7*\PI:2.1*\PI] plot (\x-\PI*0.1,{0.3*sin(\x*10 r)-4.8});
+    \draw[line width=0.5mm, smooth, samples=100, domain=2*\PI:2.4*\PI] plot (\x,{0.3*sin(\x*10 r)-4.8}) node[right] {Phasenmodulation};
+    
+    \draw[dashed] (0.4*\PI,-1)--(0.4*\PI,-5.1);
+    \draw[dashed] (0.8*\PI,-1)--(0.8*\PI,-5.1);
+    \draw[dashed] (1.6*\PI,-1)--(1.6*\PI,-5.1);
+    \draw[dashed] (2*\PI,-1)--(2*\PI,-5.1);
+\end{tikzpicture}
+
+\subsubsection{Amplitudenmodulation}
+\begin{itemize}
+    \item Kodierung des Signals durch Variation der Amplitude
+    \item Einfache Kodierung/Dekodierung
+    \item Abstandsabhängige Amplitude $\Rightarrow$ störanfällig
+\end{itemize}
+
+\subsubsection{Frequenzmodulation}
+\begin{itemize}
+    \item Kodierung des Signals durch Variation der Frequenz
+    \item Kompliziertere Kodierung/Dekodierung
+    \item Weniger abstandsabhängig, dafür Dopplereffekt
+\end{itemize}
+
+\subsubsection{Phasenmodulation}
+\begin{itemize}
+    \item Kodierung des Signals durch Phasenverschiebung
+    \item Komplizierte Kodierung/Dekodierung
+    \item Weniger Störanfällig als FM und AM
+\end{itemize}
+
+\subsection{Leitungskodierung}
+Durch Leitungskodierung (Bsp. Manchesterkodierung) können Fehler erkannt, Gleichstromanteile vermieden und der Takt rückgewonnen werden.
+
+\subsubsection{Einfache Manchesterkodierung}
+\begin{minipage}{0.5\textwidth}
+    Nach G.E. Thomas (wie in Übung): 
+    \begin{description}
+        \item[0:] steigende Flanke
+        \item[1:] fallende Flanke
+    \end{description}
+    \vspace{5mm}
+\end{minipage}
+\begin{minipage}{0.05\textwidth}
+    \hfill
+\end{minipage}
+\begin{minipage}{0.45\textwidth}
+\begin{tikzpicture}[
+        scale=0.9,
+        bold/.style={font=\bf}
+    ]
+        \node[anchor=east, bold] at (-0.1,0.15) {Daten};
+        \foreach \x [count = \xi] in {1,0,1,0,0,1,1,1,0} {
+            \node[bold] at (\xi*0.5, 0.15) {\x};
+            \draw[dashed] (\xi*0.5-0.25,0)--(\xi*0.5-0.25,-1.2);
+        };
+        \draw[dashed] (4.75,0.15)--(4.75,-1.2);
+        \node[anchor=east, bold] at (-0.1,-0.8) {Kodierung};
+        \draw[line width=0.5mm, draw=red] 
+            (0.25,-0.5)--(0.5,-0.5)--(0.5,-1.1)--(1,-1.1)-- %1
+            (1,-0.5)--(1.5,-0.5)-- %0
+            (1.5,-1.1)--(2,-1.1)-- %1
+            (2,-0.5)--(2.25,-0.5)-- %0
+            (2.25,-1.1)--(2.5,-1.1)--(2.5,-0.5)--(3,-0.5)-- %1
+            (3,-1.1)--(3.25,-1.1)-- %1
+            (3.25,-0.5)--(3.5,-0.5)--(3.5,-1.1)--(3.75,-1.1)-- %1
+            (3.75,-0.5)--(4,-0.5)--(4,-1.1)--(4.5,-1.1)--(4.5,-0.5)--(4.75,-0.5); %0
+    \end{tikzpicture}
+\end{minipage}
+Der IEEE 802.3 Standard beschreibt genau die invertierte Form der hier beschriebenen Manchesterkodierung.
+
+\subsubsection{Differentielle Manchesterkodierung}
+\begin{minipage}{0.5\textwidth}
+    In der Mitte einer jeden Zeiteinheit findet eine Pegeländerung statt. Der Datenstrom wird wie folgt kodiert:
+    \begin{description}[style=unboxed,leftmargin=0cm]
+        \item[0:] eine weitere Pegeländerung findet am Anfang der Zeiteinheit statt
+        \item[1:] während der Zeiteinheit findet keine weitere Pegeländerung statt
+    \end{description}
+\end{minipage}
+\begin{minipage}{0.05\textwidth}
+    \hfill
+\end{minipage}
+\begin{minipage}{0.45\textwidth}
+    \begin{tikzpicture}[
+        scale=0.9,
+        bold/.style={font=\bf}
+    ]
+        \node[anchor=east, bold] at (-0.1,0.15) {Daten};
+        \foreach \x [count = \xi] in {1,0,1,0,0,1,1,1,0} {
+            \node[bold] at (\xi*0.5, 0.15) {\x};
+            \draw[dashed] (\xi*0.5-0.25,0)--(\xi*0.5-0.25,-1.2);
+        };
+        \draw[dashed] (4.75,0.15)--(4.75,-1.2);
+        \node[anchor=east, bold] at (-0.1,-0.8) {Kodierung};
+        \draw[line width=0.5mm, draw=red] 
+            (-0.01,-1.1)--(0.5,-1.1)--(0.5,-0.5)--(0.75,-0.5)-- %1
+            (0.75,-1.1)--(1,-1.1)--(1,-0.5)--(1.5,-0.5)-- %0
+            (1.5,-1.1)--(1.75,-1.1)-- %1
+            (1.75,-0.5)--(2,-0.5)--(2,-1.1)--(2.25,-1.1)-- %0
+            (2.25,-0.5)--(2.5,-0.5)--(2.5,-1.1)--(3,-1.1)-- %0
+            (3,-0.5)--(3.5,-0.5)-- %1
+            (3.5,-1.1)--(4,-1.1)-- %1
+            (4,-0.5)--(4.25,-0.5)-- %0
+            (4.25,-1.1)--(4.5,-1.1)--(4.5,-0.5)--(4.75,-0.5);
+    \end{tikzpicture}
+\end{minipage}
+
+\subsection{Multiplexing}
+\begin{description}
+    \item[Synchrones Zeitmultiplexing:] Jeder Teilnehmer besitzt fest zugeordnete Zeitintervalle in denen er Nachrichten senden kann
+    \item[Asynchrones Zeitmultiplexing:] Die Nachrichten werden getaggt
+    \item[Frequenzmultiplexing:] Die Teilnehmer senden mit verschiedenen Trägerfrequenzen
+\end{description}
+
+\section{Sicherungsschicht}
+Die Sicherungsschicht ist für Medium Access Control und Logical Link Control zuständig. Dies beinhaltet Flusskontrolle, Rahmenbehadlung und Fehlerüberprüfung.
+
+\subsection{Fehlererkennung und -korrektur}
+\begin{description}
+    \item[Gerades Paritätsbit:] $\sum_i d_i \mod 2 = p$ mit $d_1, \dots, d_n$ Datenbits und $p$ Paritätsbit
+    \item[Hamming-Distanz $d$:] Zwichen zwei Bitfolgen $a, b$: Zahl der Bitflips um aus $a$ $b$ zu machen. Einer Menge an Bitfolgen: minimum aller paarweisen Hamming-Distanzen.
+    \item[Erkennbare Fehler:] $f_e = d_{min}-1$
+    \item[Korrigierbare Fehler:] $f_k = \left\lfloor \frac{d_{min}-1}{2} \right\rfloor$
+    \item[Kreuzsicherung] Je eine Spalte und eine Zeile einer Matrix mit Paritätsbit ermöglichen Fehlererkennung in einer Matrix.
+\end{description}
+
+\subsection{Ethernet}
+\bgroup
+\def\arraystretch{1.5}
+    \begin{tabular}{l|c|l}
+        \textbf{Ethernetstandard} & \textbf{Geschwindigkeit} & \textbf{Mindestframelänge}\\
+        \hline
+        10BASE-T & $10\frac{\text{Mbit}}{\text{s}}$ & 64 Oktette\\
+        Fast Ethernet & $100\frac{\text{Mbit}}{\text{s}}$ & 64 Oktette\\
+        Gigabit Ethernet & $1\frac{\text{Gbit}}{\text{s}}$ & 512 Oktette\\
+        10-Gigabit-Ethernet & $10\frac{\text{Gbit}}{\text{s}}$ & 512 Oktette, jedoch kein CSMA/CD
+    \end{tabular}
+\egroup
+\vspace{5mm}\\
+Die \textit{Mindestframegröße}\footnote{Für genauere Informationen siehe \href{http://www.trincoll.edu/Academics/MajorsAndMinors/Engineering/Documents/IEEE\%20Standard\%20for\%20Ethernet.pdf}{IEEE 802.3}} ist nötig um \textit{CSMA/CD} (Carrier-sense multiple access with collision detection) zu ermöglichen, d.h. mehrere Rechner teilen sich einen Bus und müssen Kollisionen bei gleichzeitigem Senden erkennen.
+
+\begin{description}[style=unboxed,leftmargin=0cm]
+    \item[Ethernetpaket]\hfill\\
+    \begin{tikzpicture}[
+        block/.style={rectangle, draw=black!50, thick, align=center, font=\tiny},
+        node distance=-\pgflinewidth,
+    ]
+        \node[block, fill=black!10] (start) {Start Delimiter\\(8 Oktette)};
+        \node[right=of start, block] (dstmac) {Ziel MAC\\(6 Oktette)};
+        \node[right=of dstmac, block] (srcmac) {Absender MAC\\(6 Oktette)};
+        \node[right=of srcmac, block] (tag) {optional 802.1Q tag\\(4 Oktette)};
+        \node[right=of tag, block] (len) {Länge\\(2 Oktette)};
+        \node[right=of len, block] (data) {Daten\\(46-1500 Oktette)};
+        \node[right=of data, block] (crc) {CRC\\(4 Oktette)};
+        \node[right=of crc, block, fill=black!10] (ifg) {Interframe Gap\\(12 Oktette)};
+        
+        \draw[decoration={brace,raise=4pt, mirror},decorate] (dstmac.south west) -- node[below=6pt] {Layer 2} (crc.south east);
+        \draw[decoration={brace,raise=4pt, mirror},decorate] (start.south west) -- node[below=6pt] {Layer 1} ($(start.south east) + (-0.1,0)$);
+        \draw[decoration={brace,raise=4pt, mirror},decorate] ($(ifg.south west) + (0.1,0)$) -- node[below=6pt] {Layer 1} (ifg.south east);
+    \end{tikzpicture}
+\end{description}
+
+\begin{description}
+    \item[Transparent Bridging] Auch Layer 2 Switching genannt. Switching Tabellen halten die Source empfangener Frames als Eintrag fest. Wenn ein gesuchter Eintrag nicht in der Tabelle ist, wird über alle Ports der Bridge Flooding betrieben. Die Antwort, in Form der Destination, wird in allen auf der Strecke liegenden Switch Tabellen nur festgehalten, wenn die Zieladresse erreicht wird. Es besteht die Gefahr für Zyklen durch Kreise im Netz.
+    \item[Ethernet Flow Control] Wenn der sendende Computer schneller überträgt, als der Empfänger aufnehmen kann, werden Pause-Frames übertragen.
+    \item[Store-and-forward] Die Switch puffert den gesamten Frame, checkt die Prüfsumme und schickt bei Beschädigung ein Signal zurück. Ansonsten wird der Frame anschließend weitergeleitet.
+    \item[Cut-through] Die Switch puffert den Frame bis die Ziel-MAC gelesen wurde und sendet anschließend sofort den Frame weiter. Die Prüfsumme kann so nicht gecheckt werden. Die Latenz und Speicherlast ist jedoch geringer.
+    \item[Spanning Tree Protocol] Ports die beim Flooding zu Kreisen führen, werden gesperrt.
+\end{description}
+
+\subsection{Funktechnologien}
+\begin{tabular}{l|c|c}
+    & WiMAX & WLAN (IEEE 802.11) \\ \hline
+    OFDM & \multicolumn{2}{c}{ja} \\
+    MIMO & \multicolumn{2}{c}{ja} \\
+    Sendeleistung & sehr hohe Sendeleistung & geringe Sendeleistung \\
+    Medienzugriffsverfahren & sehr effizient  (Nutzer/Reichweite) & weniger effizient
+\end{tabular}
+
+\begin{description}
+    \item[OFDMA]  Orthogonal Frequency Division Multiple Access, flexible Aufteilung von OFDM-Unterträgern (Kanäle abseits der Trägerfrequenz) auf Stationen 
+    \item[TDD (Time Division Duplex)] Station wechselt zwischen Senden und Empfangen auf einem Unterträger
+    \item[MIMO (Multiple Input Multiple Output)] Nutzung von N Sende- und N Empfangsantennen pro Gerät für N-fache Kanalkapazität. Hardwarekosten steigen durch komplizierte Kanalmatrixberechnung.
+\end{description}
+
+\subsection{Resilient Packet Ring (RPR)}
+Ein RPR besteht aus Teilnehmern, die über zwei gegenläufige, gerichtete Ringe verbunden sind. Durch den \textit{Doppelring} ist das Netzwerk auch bei Ausfall einer Verbindung weiterhin Funktionsfähig (Routing-Umschaltung innerhalb 50ms). Auf jedem Ring können mehrere Übertragungen gleichzeitig stattfinden (\textit{spatial reuse}). Bei Beginn einer Übertragung wird der komplette Pfad blockiert.
+
+\subsection{Carrier Ethernet}
+Um zwischen Verschiedenen Standorten (z.B. größere Firmen) mehrere getrennte Layer 2 Netzwerke zu tunneln muss auch das Tunneln mehrerer VLANS möglich sein. Dies kann per Q-in-Q (äußere und innere VLAN-ID) oder MAC-in-MAC (ein Ethernetpaket in ein anderes Ethernetpaket einpacken) geschehen.
+\begin{center}
+    TODO: Hier Abbildungen dazu einfügen
+\end{center}
+
+\subsection{Multiprotocol Label Switching (MPLS)}
+An Ingress-Switchen erhalten Pakete anhand ihres Eingangsports und Zieladresse Label und werden anhand dieses Labels an die entsprechend nächste Switch weitergeleitet. An inneren Switchen werden Pakete anhand ihres Labels und Eingangsports weitergeleitet und umgelabelt. Label müssen auf einer Verbindung zwischen zwei Switchen eindeutig sein (Label~$\to$~weitere~Route).
+
+\subsection{SONET/SDH}
+\begin{description}
+    \item[SONET:] Synchronous Optical Network
+    \item[SDH:] Synchronous Digital Hierarchy
+\end{description}
+Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverbindungen) eingesetzt. Dabei besteht jeder SONET-Basisrahmen aus je einenm Bit per Datenstrom und Overhead (9 Zeilen, 87 Spalten Nutzdaten, 3 Spalten Overhead $\Rightarrow$ 783 parallele Datenströme).
+
+\begin{tabular}{|ll|l|lll|}
+    \hline
+    \multicolumn{2}{|c|}{SONET} & SDH & \multicolumn{3}{|c|}{Datenrate ($\frac{\text{Mbit}}{\text{s}}$)}\\
+    elektrisch & optisch & optisch & gesamt & SPE & User\\
+    \hline
+    STS-1 & OC-1 & STM-0 & 51,84 & 50,112 & 49,536 \\
+    STS-3 & OC-3 & STM-1 & 155,52 & 150,336 & 148,608 \\
+    - & - & STM-2 & 311,04 & 300,672 & 297,216 \\
+    STS-9 & OC-9 & STM-3 & 466,56 & 451,008 & 445,824 \\
+    STS-12 & OC-12 & STM-4 & 622,08 & 601,344 & 594,432 \\
+    STS-18 & OC-18 & STM-6 & 933,12 & 902,016 & 891,648 \\
+    STS-24 & OC-24 & STM-8 & 1244,16 & 1202,688 & 1188,864 \\
+    STS-36 & OC-36 & STM-12 & 1866,24 & 1804,032 & 1783,296 \\
+    STS-48 & OC-48 & STM-16 & 2488,32 & 2405,376 & 2377,728 \\
+    STS-96 & OC-96 & STM-32 & 4976,64 & 4810,752 & 4755,456 \\
+    STS-192 & OC-192 & STM-64 & 9953,28 & 9621,504 & 9510,912 \\
+    STS-256 & OC-256 & - & 13271,04 & 12828,672 & 12681,216 \\
+    STS-384 & OC-384 & STM-128 & 19906,56 & 19243,008 & 19021,824 \\
+    STS-768 & OC-768 & STM-256 & 39813,12 & 38486,016 & 38043,648 \\
+    STS-1536 & OC-1536 & STM-512 & 79626,24 & 76972,032 & 76087,296 \\
+    STS-3072 & OC-3072 & STM-1024 & 159252,48 & 153944,064 & 152174,592\\
+    \hline
+\end{tabular}
+%
+\begin{description}
+    \item[STS:] Synchronous Transport Signal
+    \item[OC:] Optical Carrier
+    \item[STM:] Synchronous Transfer Mode
+    \item[SPE:] Synchronous Payload Envelope
+\end{description}
+
+\section{Transportschicht}
+
+\begin{description}
+    \item[Port] Mechanismus für eine Anwendung-zu-Anwendung-Übertragung.
+    %
+    \item[UDP (\textit{User Datagram Protocol})] verbindungsloses Protokoll nach dem \textit{Best Effort}-Prinzip. Implementierung von \textit{Ports}.
+    %
+    \item[Verbindung] Kanal, in dem zusammengehörige Pakete verschickt werden. Der Erhalt und die richtige Reihenfolge werden garantiert.
+    %
+    \item[TCP (\textit{Transmission Control Protocol})] verbindungsbehaftetes Protokoll mit Ende-zu-Ende-Sicherung. Implementierung von \textit{Verbindungen}.
+\end{description}
+
+\begin{minipage}{0.3\textwidth}
+\begin{tikzpicture}
+    \draw (0,0.3) node[draw, minimum height=6mm, minimum width=16mm] {Initiator} (0,0) -- (0,-5);
+    \draw (5,0.3) node[draw, minimum height=6mm, minimum width=16mm] {Responder} (5,0) -- (5,-5);
+    %
+    \draw[->] (0,-0.5) -- (5,-0.7)
+    node[above,sloped,pos=0.5]{SYN(seq = x)};
+    \draw[->] (5,-1.5) -- (0,-1.7)
+    node[above,sloped,pos=0.5]{SYN+ACK(seq=y,ack=x + 1)};
+    \draw[->] (0,-2.5) -- (5,-2.7)
+    node[above,sloped,pos=0.5]{ACK(seq=x+1,ack=y+1)};
+    \draw[->] (0,-3.5) -- (5,-3.7)
+    node[above,sloped,pos=0.5]{DATA(seq=x+1,data=S)};
+    \draw[->] (5,-4.5) -- (0,-4.7)
+    node[above,sloped,pos=0.5]{ACK(seq=y+1,ack=x+1+S)};
+    %
+    \draw[very thick, loosely dotted] (2.5,-5) -- (2.5,-5.5);
+    \draw (0,-5.5) -- (0,-8.5);
+    \draw (5,-5.5) -- (5,-8.5);
+    %
+    \draw[->] (0,-6) -- (5,-6.2)
+    node[above,sloped,pos=0.5]{FIN(seq=z)};
+    \draw[->] (5,-7) -- (0,-7.2)
+    node[above,sloped,pos=0.5]{FIN+ACK(seq=w,ack=z+1)};
+    \draw[->] (0,-8) -- (5,-8.2)
+    node[above,sloped,pos=0.5]{ACK(seq=z+1,ack=w+1)};
+\end{tikzpicture}
+\end{minipage}
+%
+\begin{minipage}{0.2\textwidth}
+    \hspace{1cm}
+\end{minipage}
+%
+\begin{minipage}{0.3\textwidth}
+\begin{tikzpicture}
+    \draw (0,0.3) node[draw, minimum height=6mm, minimum width=16mm] {Initiator} (0,0) -- (0,-3);
+    \draw (5,0.3) node[draw, minimum height=6mm, minimum width=16mm] {Responder} (5,0) -- (5,-3);
+    %
+    \draw[->] (0,-0.5) -- (5,-0.7)
+    node[above,sloped,pos=0.2]{ConReq(P)}
+    node[above,sloped,pos=0.8]{ConInd(P)};
+    \draw[->] (5,-1.5) -- (0,-1.7)
+    node[above,sloped,pos=0.2]{ConRsp(P)}
+    node[above,sloped,pos=0.8]{ConCnf(P)};
+    \draw[->] (0,-2.5) -- (5,-2.7)
+    node[above,sloped,pos=0.2]{DatReq}
+    node[above,sloped,pos=0.8]{DatInd};
+\end{tikzpicture}
+\end{minipage}
+
+\begin{description}
+    \item[Slow Start] Algorithmus zur Flusskontrolle bei TCP.
+    \begin{enumerate}
+        \item Fenstergröße := Segmentgröße
+        \item Bei Erhalt eines ACKs gehe zu 2. und:
+        \begin{itemize}
+            \item Falls Fenstergröße $<$ Überlastfenster: Fenstergröße *= 2
+            \item Falls Fenstergröße $<$ Empfangsfenser: Fenstergröße += Segmentgröße
+            \item Sonst halte die Fenstergröße konstant
+        \end{itemize}
+        \item Bei einem Timeout: Gehe zu 1.
+    \end{enumerate}
+    %
+    \item[Schiebefensterprotokoll] Effizienzsteigerung, indem man $F$ viele Pakete hintereinander versendet, ohne auf die Bestätigung des vorherigen Pakets warten zu müssen. (\textit{Stop-and-Wait ist wie ein Schiebefensterprotokoll mit $F = 1$})
+    \bigskip \\
+    Bei Erhalt eines Pakets mit falscher Sequenznummer (Empfangs- = Sendereihenfolge!): \\
+    \textbf{Go-Back-N:}
+    \begin{itemize}
+        \item Empfänger verwirft das Paket
+        \item Nach einem Timeout muss der Sender alle unbestätigten Pakete erneut senden
+    \end{itemize}
+    %
+    \textbf{Selective Repeat:}
+    \begin{itemize}
+        \item Empfänger speichert das Paket zwischen und sendet ein ACK mit der Sequenznummer des ersten fehlenden Pakets an den Sender
+        \item Nach einem Timeout wird das Paket mit dieser Sequenznummer erneut gesendet
+    \end{itemize}
+\end{description}
+
+\section{Performance}
+
+\begin{description}
+    \item[Fairness] Alle Teilnehmer haben die gleiche Chance, heranzukommen.
+    \item[Max-Min-Fairness] Jeder bekommt gleich viel\footnote{Der Algorithmus kann auch gewichtet angewandt werden, wobei jeder Teilnhmer in jedem Schritt anhand seiner Gewichtung Resourcen aus dem Topf zugeteilt bekommt.} aus dem Topf. Hat jemand mehr als er braucht, kommt der Überschuss wieder in den Topf. Dieser Algorithmus wird wiederholt bis alle gesättigt sind oder der Topf leer ist.
+    \item[Lastberechnung] $\text{Last}_{\text{neu}} = a \cdot \text{Last}_{\text{alt}} + (1 - a) \cdot \text{Last}_{\text{gemessen}} \hs{1cm} a \ldots \text{Anpassungsfaktor}$
+    \item[Bandwidth Delay Product] $\text{BDP} = b \cdot \frac{d}{v} \hs{1cm} b \ldots \text{Bitrate}, d \ldots \text{Kabellänge}, v \ldots \text{Übertragunsgeschw.}$ 
+\end{description}
+
+\section{Internetdienste}
+
+\begin{description}
+    \item[URL (\textit{Uniform Resource Locator})] $\underbrace{\text{http}\sphantom}_{\text{Protokoll}}\text{://}\underbrace{\text{www}\sphantom}_{\text{Host}}\text{.}\underbrace{\text{inf}\sphantom}_{\text{Subdomain}}\text{.}\underbrace{\text{tu-dresden}\sphantom}_{\text{Domain}}\text{.}\underbrace{\text{de}\sphantom}_{\text{TLD}}\underbrace{\text{/test/index.html}}_{\text{Resource}}$ \\
+    %
+    \textit{(Im weiteren wird die Kombination einer Teilmenge aus Host, Subdomain, Domain und TLD als \host bezeichnet.)}
+    %
+    \item[DNS (\textit{Domain Name System})] System zum Auflösen von {\host}s zu IPs.
+    \begin{itemize}
+        \item Client sendet Ziel-\host an den lokalen DNS-Server
+        \item Lokaler DNS-Server befragt den Root-DNS-Server nach dem \host
+        \item \textbf{Rekursiver Ansatz:} \texttt{lookup(rootServer, host)} \\
+            \texttt{lookup(server, host):}
+            \begin{itemize}
+                \item Falls \host als IP vorliegt, gebe sie aus
+                \item Sonst gebe \texttt{lookup(server', host)} aus, \\
+                wobei \texttt{server'} der zuständige DNS-Server ist
+            \end{itemize}
+        \item \textbf{Iterativer Ansatz:}
+            \begin{itemize}
+                \item Root-Server sendet dem lokalen Server die IP des nächsten zuständigen DNS-Servers
+                \item Lokaler Server muss diesen dann befragen usw.
+                \item Der letzte zuständige Server sendet dann die IP des {\host}s
+            \end{itemize}
+        \item Lokaler DNS-Server sendet die Ziel-IP an den Client
+    \end{itemize}
+\end{description}
+
+\begin{tabular}{>{\tt}l>{\tt}l>{\tt}l>{\tt}l>{\tt}l}
+    NAME & TTL & CLASS & TYPE & VALUE \\ \hline
+    jupiter & 86400 & IN & A & 117.186.1.1 \\
+    jupiter & 86400 & IN & AAAA & 2001:db8:85a3:8d3::1 \\
+    zeus & 86400 & IN & CNAME & jupiter \\
+    rn-edu.de. & 86400 & IN & NS & jupiter \\
+    \_sip.\_tcp.rn-edu.de. & 86400 & IN & SRV & 0 0 5060 jupiter
+\end{tabular}
+
+\begin{description}
+    \item[ARP (\textit{Address Resolution Protocol})] Protokoll zum Abbilden von IP-Adressen auf MAC-Adressen: Man sendet einen ARP-Request mit der IP als Broadcast. Der Netzwerkteilnehmer mit der entsprechenden IP antwortet mit seiner MAC.
+    %
+    \item[Base64] Kodierung zur ASCII-Übertragung von Binärdaten (\textit{z.B. bei E-Mail}). 3 Bytes ($3 \cdot 8 bit$) werden jeweils zu 4 Base64-Zeichen ($4 \cdot 6 bit$) umgewandelt. Unvollständige 3-Byte-Blöcke werden durch Padding trotzdem zu einem 4er-Base64-Block.
+    %
+    \item[SMTP (\textit{Simple Mail Transfer Protocol})] Protokoll zum Senden von E-Mails an einen Server.
+    %
+    \item[POP3 (\textit{Post Office Protocol 3})] Protokoll zum Herunterladen von E-Mails von einem Server (\textit{Server wird entlastet}).
+    %
+    \item[IMAP (\textit{Internet Message Access Protocol})] Protokoll zum selektiven Abrufen von E-Mails von Servern (\textit{E-Mail bleibt auf dem Server}).
+    %
+    \item[SNMP (\textit{Simple Network Management Protocol})] Protokoll zum einheitlichen Konfigurieren und Verwalten von Netzwerkgeräten.
+\end{description}
+
+\section{Multimediakommunikation}
+
+\begin{description}
+    \item[Lauflängenkodierung] Wenn sich ein Byte mindestens $S$ mal wiederholt ($S \ldots \text{Schwellenwert}$), wird es wie folgt kodiert: \texttt{Byte | Marke | Anzahl - S}. Die anderen Bytes bleiben unverändert.
+    %
+    \item[Huffman-Kodierung] Die zu kodierenden Zeichen werden nach Wahrscheinlichkeit aufsteigend geordnet. Nun werden immer die Elemente mit den niedrigsten Wahrscheinlichkeiten verbunden (\textit{neuer Baumknoten, Wahrscheinlichkeiten addieren}). Am Ende werden alle Rechtsabzweigungen mit einer Zahl (0 oder 1) beschriftet und alle Linksabzweigungen mit der jeweils anderen Zahl. Die Kodierung für ein Element sind die Beschriftungen auf dem Pfad von der Wurzel zum Element.
+    %
+    \item[SIP (\textit{Session Initiation Protocol})] Protokoll zum Aufbauen von VoIP-Sessions, meist über SIP-Proxys. Es verwendet das SDP (\textit{Session Description Protocol}), was eigentlich nur eine Beschreibungssprache und \textit{kein} Protokoll ist.
+    %
+    \item[RTP (\textit{Real-time Transport Protocol})] Protokoll zur effizienten Übertragung von Audio- und Videodaten. Flusskontrolle und Quality-of-Service werden vom RTCP (\textit{Real-time Transport Control Protocol}) übernommen.
+\end{description}
+
+\section{Verteilte Systeme}
+
+\begin{description}
+    \item[RPC (\textit{Remote Procedure Call})] Aufruf einer Funktion auf einem entfernten Rechner.
+    \item[Stub] Schnittstelle zwischen den Anwendungen und dem Transportsystem. Sie (de)kodiert die Aufrufe und Ergebnisse.
+    \item[RPC-Bindevorgang] Der RPC-Server wird über Direktadressierung, Broadcast oder einen Verzeichnisdienst ausfindig gemacht. Nach dem Binding können RPCs gesendet werden.
+\end{description}
+
+\begin{tabular}{l|l|l|l}
+    Fehlersemantik & Bei Fehler & Filterung von Duplikaten & Bei Systemausfall \\ \hline
+    maybe & kein Neusenden & keine & kein Neusenden \\
+    at-least-once & Neusenden & keine & kein Neusenden \\
+    at-most-once & Neusenden & ja & kein Neusenden \\
+    exactly-once & Neusenden & ja & Neusenden
+\end{tabular}
+
+\begin{itemize}
+    \item \textbf{A}tomicity: Transaktionen werden ganz oder gar nicht ausgeführt.
+    \item \textbf{C}onsistency: Transaktionen führen von konsistenten Zuständen wieder zu konsistenten Zuständen.
+    \item \textbf{I}solation: Parallele Transaktionen beeinflussen sich nicht gegenseitig.
+    \item \textbf{D}urability: Erfolgreiche Transaktionen werden persistiert.
+\end{itemize}
+
+\begin{description}
+    \item[2PC (\textit{2-Phase Commit Protocol})] Protokoll zur Umsetzung von \textit{ACID} in verteilten Systemen.
+    \begin{enumerate}
+        \item Voting-Phase:
+        \begin{itemize}
+            \item Koordinator sendet \texttt{C\_BEGIN} an alle Teilnehmer
+            \item Jeder Teilnehmer führt die Transaktion aus (und speichert sich Undo-Informationen)
+            \item Koordinator sendet \texttt{C\_PREPARE} an alle Teilnehmer
+            \item Jeder Teilnehmer sendet entweder \texttt{C\_READY} wenn sie der Transaktion zustimmen oder \texttt{C\_REFUSE} wenn nicht
+        \end{itemize}
+        \item Commit-Phase:
+        \begin{itemize}
+            \item Koordinator sendet \texttt{C\_COMMIT} genau dann wenn alle Teilnehmer zugestimmt haben; sonst sendet er \texttt{C\_ROLLBACK} (\textit{auch bei einem Timeout})
+            \item Jeder Teilnehmer persistieren den Zustand bzw. setzen die Änderungen zurück
+            \item Jeder Teilnehmer sendet \texttt{ACK} zum Koordinator
+        \end{itemize}
+    \end{enumerate}
+    %
+    \item[SOAP (\textit{Simple Object Access Protocol})] Protokoll zum Arbeiten mit Ressourcen auf Webservern. Es nutzt HTTP mit einem XML-Body.
+    %
+    \item[REST (\textit{Representational State Transfer})] Paradigma um mit Ressourcen auf Webservern zu arbeiten mithilfe von zustandslosen Operationen.
+\end{description}
+
+\section{Mobile Computing}
+
+\begin{description}
+    \item[Zellulares Netzwerk] Das Frequenzband wird in unterschiedliche Teilfrequenzen aufgeteilt. Nachbarzellen nutzen andere Teilfrequenzen zur Vermeidung von Interferenzen. Das entstehende Muster (\textit{Cluster}) wird wiederholt.
+    %
+    \begin{itemize}
+        \item Je größer die Zelle, desto weniger Kanäle pro Fläche
+        \item Je größer die Zelle, desto größer die benötigte Sendeleistung und Interferenzzone
+        \item $R \ldots \text{Radius der Zelle}$, Interferenzradius = $5R$
+        \item $D = R \cdot \sqrt{3k} \hs{1cm} D \ldots \text{Abstand Basisstationen gleicher Zellen}, k \ldots \text{Anzahl der Zelltypen}$
+    \end{itemize}
+    %
+    \item[DHCP (\textit{Dynamic Host Configuration Protocol})] Protokoll zum automatischen Verteilen von IP-Adressen und Parametern wie DNS-Servern und Gateways.
+    \begin{enumerate}
+        \item Client sendet \texttt{DHCPDISCOVER} als Broadcast und erhält \texttt{DHCPOFFER}
+        \item Client sendet \texttt{DHCPREQUEST} an einen der DHCP-Server und erhält \texttt{DHCPACK} mit den Zeiten T (\textit{Lease time}) und T1 (\textit{50\% T}) T2 (\textit{87.5\% T})
+        \item Wenn T1 abläuft, sendet der Client \texttt{DHCPREQUEST} an den momentanen DHCP-Server, um das Lease der momentanen IP zu verlängern
+        \item Wenn T2 abläuft, sendet der Client \texttt{DHCPREQUEST} als Broadcast, um das Lease der momentanen IP zu verlängern
+        \item Wenn Client \texttt{DHCPACK} erhält (3. oder 4.), werden T, T1 und T2 aktualisiert (gehe zu 3.)
+        \item Wenn T abläuft oder der Client \texttt{DHCPNACK} erhält (3. oder 4.), verliert er die IP und bricht den Netzwerkverkehr ab (gehe 1.)
+    \end{enumerate}
+    %
+    \item[Mobile IP] Protokoll um mobile Internetnutzer über eine statische IP adressieren zu können.
+    \begin{itemize}
+        \item Jeder \textit{Mobile Host} (MH) ist bei einem \textit{Home Agent} (HA) angemeldet
+        \item Der HA bildet die statische IP (\textit{Home Address}) auf die dynamische \textit{Care-of Address} (COA) des MH ab
+    \end{itemize}
+    %
+    \textbf{Foreign-Agent COA:}
+    \begin{itemize}
+        \item MH meldet sich beim \textit{Foreign Agent} (FA) mit seiner IP und seinem HA an
+        \item FA meldet sich beim HA an mit dem MH und der IP des FA (COA)
+        \item MA kann nun Pakete an die \textit{Home Address} an den FA weiterleiten, der sie dann an den MH weiterleitet
+    \end{itemize}
+    \textbf{Co-located COA:}
+    \begin{itemize}
+        \item MH meldet sich beim HA mit seiner IP (COA) an (MH braucht eine eindeutige IP)
+        \item MA kann nun Pakete an die \textit{Home Address} an den MH weiterleiten
+    \end{itemize}
+\end{description}
+
+\end{document}
+
