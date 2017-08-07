@@ -664,23 +664,24 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
 \end{description}
 
 \begin{tabular}{l|l|l|l}
-    Fehlersemantik & Bei Fehler & Filterung von Duplikaten & Bei Systemausfall \\ \hline
+    Fehlersemantik & Bei Fehler & Filterung von Duplikaten & Bei Client- oder Serverfehler \\ \hline
     maybe & kein Neusenden & keine & kein Neusenden \\
     at-least-once & Neusenden & keine & kein Neusenden \\
     at-most-once & Neusenden & ja & kein Neusenden \\
     exactly-once & Neusenden & ja & Neusenden
 \end{tabular}
 
-\begin{samepage}
-\begin{itemize}
-    \item \textbf{A}tomicity: Transaktionen werden ganz oder gar nicht ausgeführt.
-    \item \textbf{C}onsistency: Transaktionen führen von konsistenten Zuständen wieder zu konsistenten Zuständen.
-    \item \textbf{I}solation: Parallele Transaktionen beeinflussen sich nicht gegenseitig.
-    \item \textbf{D}urability: Erfolgreiche Transaktionen werden persistiert.
-\end{itemize}
-\end{samepage}
-
 \begin{description}
+    \item[ACID-Prinzip] \hfill
+    \begin{samepage}
+    \begin{itemize}
+        \item \textbf{A}tomicity: Transaktionen werden ganz oder gar nicht ausgeführt.
+        \item \textbf{C}onsistency: Transaktionen führen von konsistenten Zuständen zu konsistenten Zuständen.
+        \item \textbf{I}solation: Parallele Transaktionen beeinflussen sich nicht gegenseitig.
+        \item \textbf{D}urability: Erfolgreiche Transaktionen werden persistiert.
+    \end{itemize}
+    \end{samepage}
+    %
     \item[2PC (\textit{2-Phase Commit Protocol})]
     \begin{samepage}
     Protokoll zur Umsetzung von \textit{ACID} in verteilten Systemen.
