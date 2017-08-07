@@ -92,16 +92,16 @@
         \draw [->, line width=0.5mm] (sap.south west) -- (bici.north);
         \node[block, text width=2cm, text centered] (bsdu) at (6, -5) {SDU};
         \draw [->, line width=0.5mm] (sap.south east) -- (bsdu.north);
-        
+
         \node[block, text width=2cm, text centered, split] (npdu) at ($(bsdu.south west) + (0,-1)$) {
             Header
             \nodepart{two} SDU
         };
         \draw[->, line width=0.5mm] (bsdu.south) -- (npdu.two north);
-        
+
         \draw[decoration={brace,raise=2pt},decorate] (idu.north west) -- node[above=6pt] {IDU} (idu.north east);
         \draw[decoration={brace,raise=2pt, mirror},decorate] (npdu.south west) -- node[below=6pt] {N-PDU} (npdu.south east);
-        
+
         \draw[decoration={brace,raise=4pt},decorate] (8,0) -- node[right=6pt] {Schicht $N+1$} (8,-2.95);
         \draw[decoration={brace,raise=4pt},decorate] (8,-3.05) -- node[right=6pt] {Schicht $N$} (8,-8);
     \end{tikzpicture}
@@ -152,27 +152,27 @@
 \subsection{Modulationsarten}
 \begin{tikzpicture}
     \draw[line width=0.5mm, smooth, samples=100, domain=0:2.4*\PI] plot (\x,{0.3*sin(\x*10 r)+0.1}) node[right] {Trägerfrequenz};
-    
+
     \draw[line width=0.5mm] (0,-1)--(0.4*\PI,-1)--(0.4*\PI,-0.6)--(0.8*\PI,-0.6)--(0.8*\PI,-1)--(1.6*\PI,-1)--(1.6*\PI,-0.6)--(2*\PI,-0.6)--(2*\PI,-1)--(2.4*\PI,-1) node[right] {Signal};
-    
+
     \draw[line width=0.5mm, smooth, samples=100, domain=0:0.4*\PI] plot (\x,{0.3*sin(\x*10 r)-2});
     \draw[line width=0.5mm, smooth, samples=100, domain=0.4*\PI:0.8*\PI] plot (\x,{0.6*sin(\x*10 r)-2});
     \draw[line width=0.5mm, smooth, samples=100, domain=0.8*\PI:1.6*\PI] plot (\x,{0.3*sin(\x*10 r)-2});
     \draw[line width=0.5mm, smooth, samples=100, domain=1.6*\PI:2*\PI] plot (\x,{0.6*sin(\x*10 r)-2});
     \draw[line width=0.5mm, smooth, samples=100, domain=2*\PI:2.4*\PI] plot (\x,{0.3*sin(\x*10 r)-2}) node[right] {Amplitudenmodulation};
-    
+
     \draw[line width=0.5mm, smooth, samples=100, domain=0:0.4*\PI] plot (\x,{0.3*sin(\x*10 r)-3.4});
     \draw[line width=0.5mm, smooth, samples=100, domain=0.4*\PI:0.8*\PI] plot (\x,{0.3*sin(\x*20 r)-3.4});
     \draw[line width=0.5mm, smooth, samples=100, domain=0.8*\PI:1.6*\PI] plot (\x,{0.3*sin(\x*10 r)-3.4});
     \draw[line width=0.5mm, smooth, samples=100, domain=1.6*\PI:2*\PI] plot (\x,{0.3*sin(\x*20 r)-3.4});
     \draw[line width=0.5mm, smooth, samples=100, domain=2*\PI:2.4*\PI] plot (\x,{0.3*sin(\x*10 r)-3.4}) node[right] {Frequenzmodulation};
-    
+
     \draw[line width=0.5mm, smooth, samples=100, domain=0:0.4*\PI] plot (\x,{0.3*sin(\x*10 r)-4.8});
     \draw[line width=0.5mm, smooth, samples=100, domain=0.5*\PI:0.9*\PI] plot (\x-\PI*0.1,{0.3*sin(\x*10 r)-4.8});
     \draw[line width=0.5mm, smooth, samples=100, domain=0.8*\PI:1.6*\PI] plot (\x,{0.3*sin(\x*10 r)-4.8});
     \draw[line width=0.5mm, smooth, samples=100, domain=1.7*\PI:2.1*\PI] plot (\x-\PI*0.1,{0.3*sin(\x*10 r)-4.8});
     \draw[line width=0.5mm, smooth, samples=100, domain=2*\PI:2.4*\PI] plot (\x,{0.3*sin(\x*10 r)-4.8}) node[right] {Phasenmodulation};
-    
+
     \draw[dashed] (0.4*\PI,-1)--(0.4*\PI,-5.1);
     \draw[dashed] (0.8*\PI,-1)--(0.8*\PI,-5.1);
     \draw[dashed] (1.6*\PI,-1)--(1.6*\PI,-5.1);
@@ -206,16 +206,18 @@ Durch Leitungskodierung (Bsp. Manchesterkodierung) können Fehler erkannt, Gleic
 \subsubsection{Einfache Manchesterkodierung}
 \begin{samepage}
 \begin{minipage}{0.5\textwidth}
-    Nach G.E. Thomas (wie in Übung): 
+    Nach G.E. Thomas (wie in Übung):
     \begin{description}
         \item[0:] steigende Flanke
         \item[1:] fallende Flanke
     \end{description}
     \vspace{5mm}
 \end{minipage}
+%
 \begin{minipage}{0.05\textwidth}
     \hfill
 \end{minipage}
+%
 \begin{minipage}{0.45\textwidth}
 \begin{tikzpicture}[
         scale=0.9,
@@ -228,7 +230,7 @@ Durch Leitungskodierung (Bsp. Manchesterkodierung) können Fehler erkannt, Gleic
         };
         \draw[dashed] (4.75,0.15)--(4.75,-1.2);
         \node[anchor=east, bold] at (-0.1,-0.8) {Kodierung};
-        \draw[line width=0.5mm, draw=red] 
+        \draw[line width=0.5mm, draw=red]
             (0.25,-0.5)--(0.5,-0.5)--(0.5,-1.1)--(1,-1.1)-- %1
             (1,-0.5)--(1.5,-0.5)-- %0
             (1.5,-1.1)--(2,-1.1)-- %1
@@ -251,9 +253,11 @@ Der IEEE 802.3 Standard beschreibt genau die invertierte Form der hier beschrieb
         \item[1:] während der Zeiteinheit findet keine weitere Pegeländerung statt
     \end{description}
 \end{minipage}
+%
 \begin{minipage}{0.05\textwidth}
     \hfill
 \end{minipage}
+%
 \begin{minipage}{0.45\textwidth}
     \begin{tikzpicture}[
         scale=0.9,
@@ -266,7 +270,7 @@ Der IEEE 802.3 Standard beschreibt genau die invertierte Form der hier beschrieb
         };
         \draw[dashed] (4.75,0.15)--(4.75,-1.2);
         \node[anchor=east, bold] at (-0.1,-0.8) {Kodierung};
-        \draw[line width=0.5mm, draw=red] 
+        \draw[line width=0.5mm, draw=red]
             (-0.01,-1.1)--(0.5,-1.1)--(0.5,-0.5)--(0.75,-0.5)-- %1
             (0.75,-1.1)--(1,-1.1)--(1,-0.5)--(1.5,-0.5)-- %0
             (1.5,-1.1)--(1.75,-1.1)-- %1
@@ -329,7 +333,7 @@ Die \textit{Mindestframegröße}\footnote{Für genauere Informationen siehe \hre
         \node[right=of len, block] (data) {Daten\\(46-1500 Oktette)};
         \node[right=of data, block] (crc) {CRC\\(4 Oktette)};
         \node[right=of crc, block, fill=black!10] (ifg) {Interframe Gap\\(12 Oktette)};
-        
+
         \draw[decoration={brace,raise=4pt, mirror},decorate] (dstmac.south west) -- node[below=6pt] {Layer 2} (crc.south east);
         \draw[decoration={brace,raise=4pt, mirror},decorate] (start.south west) -- node[below=6pt] {Layer 1} ($(start.south east) + (-0.1,0)$);
         \draw[decoration={brace,raise=4pt, mirror},decorate] ($(ifg.south west) + (0.1,0)$) -- node[below=6pt] {Layer 1} (ifg.south east);
@@ -449,25 +453,25 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
     \node[left=of ip] (cidr) {CIDR Notation:};
     \node[right=of ip, ttt] (slash) {/};
     \node[right=of slash, ttt] (nms) {22};
-    
+
     \node[ttt, anchor=west] (nmo) at ($(nms) + (2.5,-0.5)$) {11111111.11111111.111111};
     \node[left=of nmo] (nml) {Netzmaske:};
     \node[right=of nmo, ttt] (nmz) {00.00000000};
     \node[ttt, anchor=west] at ($(nmz.east) + (0.2,0)$) { = 255.255.252.0};
-    
+
     \node[ttt, anchor=west] (ipb) at ($(nms) + (2.5,-1)$) {00001010.00101010.00010111.00000001};
     \node[left=of ipb] (ipl) {IP:};
     \node[ttt, anchor=west] at ($(ipb.east) + (0.2,0)$) { = 10.42.23.1};
-    
+
     \draw  ($(ipb.south west) + (0,-0.3)$) node[left] {\bf \&} --($(ipb.south east) + (0,-0.3)$);
-    
+
     \node[ttt, anchor=west] (sna) at ($(nms) + (2.5,-1.8)$) {00001010.00101010.00010100.00000000};
     \node[left=of sna] {Subnetzadresse:};
     \node[ttt, anchor=west] at ($(sna.east) + (0.2,0)$) { = 10.42.20.0};
-    
+
     \draw[decoration={brace,raise=2pt},decorate] (nmo.north west) -- (nmo.north east);
     \draw[->] (nms.east) -| ($(nmo.north) + (0,0.2)$);
-    
+
     \draw[decoration={brace,raise=2pt,mirror},decorate] (ip.south west) -- (ip.south east);
     \draw[->] ($(ip.south) + (0,-0.2)$) |- (ipl.west);
 \end{tikzpicture}
