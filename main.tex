@@ -415,6 +415,7 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
 
 \section{Vermittlungsschicht}
 \subsection{Dijkstra}
+\begin{samepage}
 \begin{description}
     \item[Dijkstra-Algorithmus] Algorithmus zur Ermittlung der kürzesten Pfade von einem Startknoten aus in (nicht-negativ) gewichtetem Graphen
     \item[Gegeben] Graph mit gewichteten Kanten, Startknoten S
@@ -425,12 +426,12 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
         \item festgeschriebene Routen := $\emptyset$
         \item Solange Knotenvorrat nicht leer:
         \begin{itemize}
-        	\item Entferne kürzeste Route R aus aktiven Routen und füge R festgeschriebenen Routen hinzu
-        	\item Mache Ziel von R zum aktiven Knoten A und entferne A aus Knotenvorrat
+            \item Entferne kürzeste Route R aus aktiven Routen und füge R festgeschriebenen Routen hinzu
+            \item Mache Ziel von R zum aktiven Knoten A und entferne A aus Knotenvorrat
             \item Für jeden Knoten K, zu dem keine Route festgeschrieben ist, mit Kante zu A:
             \begin{itemize}
-            	\item Füge K zum Knotenvorrat hinzu
-            	\item Füge (R-K; gewicht(R)$+$gewicht(A-K)) den aktiven Routen hinzu
+                \item Füge K zum Knotenvorrat hinzu
+                \item Füge (R-K; gewicht(R)$+$gewicht(A-K)) den aktiven Routen hinzu
             \end{itemize}
             \item Falls mehrere Pfade mit gleichem Ziel in Routen: entferne längere Pfade
         \end{itemize}
@@ -438,6 +439,7 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
     \item[Knotenausfall] Setze alle Kantengewichte am ausgefallenen Knoten auf $\infty$
     \item[Ergebnis:] Baum mit Wurzel am Startknoten \textbf{(Sink Tree)}
 \end{description}
+\end{samepage}
 
 \subsection{IP}
 \begin{description}
