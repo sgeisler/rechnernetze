@@ -659,13 +659,17 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
     Algorithmus zur Flusskontrolle bei TCP.
     \begin{enumerate}
         \item Fenstergröße := Segmentgröße
-        \item Bei Erhalt eines ACKs gehe zu 2. und:
+        \item Bei Erhalt eines ACKs:
         \begin{itemize}
-            \item Falls Fenstergröße $<$ Überlastfenster: Fenstergröße *= 2
+            \item Falls Fenstergröße $<$ Schwellenwert: Fenstergröße *= 2
             \item Falls Fenstergröße $<$ Empfangsfenser: Fenstergröße += Segmentgröße
-            \item Sonst halte die Fenstergröße konstant
+            \item Gehe zu 2.
         \end{itemize}
-        \item Bei einem Timeout: Gehe zu 1.
+        \item Bei einem Timeout:
+        \begin{itemize}
+            \item Schwellenwert := Fenstergröße / 2
+            \item Gehe zu 1.
+        \end{itemize}
     \end{enumerate}
     \end{samepage}
     %
