@@ -368,9 +368,54 @@ Ein RPR besteht aus Teilnehmern, die über zwei gegenläufige, gerichtete Ringe 
 
 \subsection{Carrier Ethernet}
 Um zwischen Verschiedenen Standorten (z.B. größere Firmen) mehrere getrennte Layer 2 Netzwerke zu tunneln muss auch das Tunneln mehrerer VLANS möglich sein. Dies kann per Q-in-Q (äußere und innere VLAN-ID) oder MAC-in-MAC (ein Ethernetpaket in ein anderes Ethernetpaket einpacken) geschehen.
-\begin{center}
-    TODO: Hier Abbildungen dazu einfügen
-\end{center}
+
+\begin{figure}[ht]
+\begin{minipage}[b]{0.45\textwidth}
+    \begin{tikzpicture}[
+            block/.style={rectangle, draw=black!50, thick, align=center, font=\tiny, minimum height=0.8cm},
+            node distance=-\pgflinewidth,
+        ]
+            \node[block] (dstmac) {Dst\\MAC};
+            \node[right=of dstmac, block] (srcmac) {Src\\MAC};
+            \node[right=of srcmac, block] (tag) {802.1Q\\tag};
+            \node[right=of tag, block] (len) {Länge};
+            \node[right=of len, block] (data) {Daten:\\Layer 2 Paket};
+            \node[right=of data, block] (crc) {CRC};
+            
+            \node[block] (idstmac) at ($(dstmac.north) + (0.5,1)$) {Dst\\MAC};
+            \node[right=of idstmac, block] (isrcmac) {Src\\MAC};
+            \node[right=of isrcmac, block] (itag) {802.1Q\\tag};
+            \node[right=of itag, block] (ilen) {Länge};
+            \node[right=of ilen, block] (idata) {Daten};
+            \node[right=of idata, block] (icrc) {CRC};
+            
+            \draw (idstmac.south west) -- (data.north west);
+            \draw (icrc.south east) -- (data.north east);
+    \end{tikzpicture}
+    \caption{802.1ah MAC-in-MAC}
+\end{minipage}
+\begin{minipage}[b]{0.55\textwidth}
+    \begin{tikzpicture}[
+            block/.style={rectangle, draw=black!50, thick, align=center, font=\tiny, minimum height=0.8cm},
+            node distance=-\pgflinewidth,
+        ]
+            \node[block] (dstmac) {Dst\\MAC};
+            \node[right=of dstmac, block] (srcmac) {Src\\MAC};
+            \node[right=of srcmac, block, fill=blue!20] (ovpid) {0x9100};
+            \node[right=of ovpid, block, fill=blue!20] (ovid) {Outer\\Tag};
+            \node[right=of ovid, block] (ivpid) {0x8100};
+            \node[right=of ivpid, block] (ivid) {Inner\\Tag};
+            \node[right=of ivid, block] (len) {Länge};
+            \node[right=of len, block] (data) {Daten};
+            \node[right=of data, block] (crc) {CRC};
+            
+            \node (vpidl) at ($(ovid.south east) + (0,-1)$) {VLAN Protocol ID};
+            \draw[->] (vpidl) -- (ovpid.south);
+            \draw[->] (vpidl) -- (ivpid.south);
+    \end{tikzpicture}
+    \caption{QIEEE 802.1ad QinQ}
+\end{minipage}
+\end{figure}
 
 \subsection{Multiprotocol Label Switching (MPLS)}
 An Ingress-Switchen erhalten Pakete anhand ihres Eingangsports und Zieladresse Label und werden anhand dieses Labels an die entsprechend nächste Switch weitergeleitet. An inneren Switchen werden Pakete anhand ihres Labels und Eingangsports weitergeleitet und umgelabelt. Label müssen auf einer Verbindung zwischen zwei Switchen eindeutig sein (Label~$\to$~weitere~Route).
