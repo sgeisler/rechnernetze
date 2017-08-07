@@ -167,10 +167,8 @@
     \draw[line width=0.5mm, smooth, samples=100, domain=1.6*\PI:2*\PI] plot (\x,{0.3*sin(\x*20 r)-3.4});
     \draw[line width=0.5mm, smooth, samples=100, domain=2*\PI:2.4*\PI] plot (\x,{0.3*sin(\x*10 r)-3.4}) node[right] {Frequenzmodulation};
 
-    \draw[line width=0.5mm, smooth, samples=100, domain=0:0.4*\PI] plot (\x,{0.3*sin(\x*10 r)-4.8});
-    \draw[line width=0.5mm, smooth, samples=100, domain=0.5*\PI:0.9*\PI] plot (\x-\PI*0.1,{0.3*sin(\x*10 r)-4.8});
-    \draw[line width=0.5mm, smooth, samples=100, domain=0.8*\PI:1.6*\PI] plot (\x,{0.3*sin(\x*10 r)-4.8});
-    \draw[line width=0.5mm, smooth, samples=100, domain=1.7*\PI:2.1*\PI] plot (\x-\PI*0.1,{0.3*sin(\x*10 r)-4.8});
+    \draw[line width=0.5mm, smooth, samples=100, domain=0:0.8*\PI] plot (\x,{0.3*sin(\x*10 r)-4.8});
+    \draw[line width=0.5mm, smooth, samples=100, domain=0.9*\PI:2.1*\PI] plot (\x-0.1*\PI,{0.3*sin(\x*10 r)-4.8});
     \draw[line width=0.5mm, smooth, samples=100, domain=2*\PI:2.4*\PI] plot (\x,{0.3*sin(\x*10 r)-4.8}) node[right] {Phasenmodulation};
 
     \draw[dashed] (0.4*\PI,-1)--(0.4*\PI,-5.1);
@@ -195,7 +193,7 @@
 
 \subsubsection{Phasenmodulation}
 \begin{itemize}
-    \item Kodierung des Signals durch Phasenverschiebung
+    \item Kodierung des Signals durch Phasensprung bei 0, kein Phasensprung bei 1
     \item Komplizierte Kodierung/Dekodierung
     \item Weniger Störanfällig als FM und AM
 \end{itemize}
