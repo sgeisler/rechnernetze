@@ -305,20 +305,24 @@ Die Sicherungsschicht ist für Medium Access Control und Logical Link Control zu
 \end{description}
 
 \subsection{Ethernet}
-\bgroup
-\def\arraystretch{1.5}
-    \begin{tabular}{l|c|l}
-        \textbf{Ethernetstandard} & \textbf{Geschwindigkeit} & \textbf{Mindestframelänge}\\
+{
+\renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{l|c|l|l|l}
+        \textbf{Standard} & \textbf{Geschwindigkeit} & \textbf{Mindestframelänge} & \textbf{SDL} & \textbf{IFG} \\
         \hline
-        10BASE-T & $10\frac{\text{Mbit}}{\text{s}}$ & 64 Oktette\\
-        Fast Ethernet & $100\frac{\text{Mbit}}{\text{s}}$ & 64 Oktette\\
-        Gigabit Ethernet & $1\frac{\text{Gbit}}{\text{s}}$ & 512 Oktette\\
-        10-Gigabit-Ethernet & $10\frac{\text{Gbit}}{\text{s}}$ & 512 Oktette, jedoch kein CSMA/CD
+        Ethernet & $10\frac{\text{Mbit}}{\text{s}}$ & 64 Oktette & 8 Oktette & 12 Oktette \\
+        Fast Ethernet & $100\frac{\text{Mbit}}{\text{s}}$ & 64 Oktette & 8 Oktette & 12 Oktette \\
+        Gigabit Ethernet & $1\frac{\text{Gbit}}{\text{s}}$ & 512 Oktette & 8 Oktette & 8 Oktette \\
+        10-Gigabit Ethernet & $10\frac{\text{Gbit}}{\text{s}}$ & 512 Oktette, kein CSMA/CD & 8 Oktette & $\geq 5$ Oktette
     \end{tabular}
-\egroup
-\vspace{5mm}\\
-Die \textit{Mindestframegröße}\footnote{Für genauere Informationen siehe \href{http://www.trincoll.edu/Academics/MajorsAndMinors/Engineering/Documents/IEEE\%20Standard\%20for\%20Ethernet.pdf}{IEEE 802.3}} ist nötig um \textit{CSMA/CD} (Carrier-sense multiple access with collision detection) zu ermöglichen, d.h. mehrere Rechner teilen sich einen Bus und müssen Kollisionen bei gleichzeitigem Senden erkennen.
-
+}
+%
+\begin{itemize}
+    \item Die \textit{Mindestframegröße} \footnote{Für genauere Informationen siehe \href{http://www.trincoll.edu/Academics/MajorsAndMinors/Engineering/Documents/IEEE\%20Standard\%20for\%20Ethernet.pdf}{IEEE 802.3}} wird für \textit{CSMA/CD} benötigt
+    \item SDL: Start Delimiter
+    \item IFG: Interframe Gap
+\end{itemize}
+%
 \begin{description}[style=unboxed,leftmargin=0cm]
     \item[Ethernet-Frame]\hfill\\
     \begin{tikzpicture}[
