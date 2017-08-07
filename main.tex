@@ -565,6 +565,8 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
     node[above,sloped,pos=0.5]{FIN+ACK(seq=w,ack=z+1)};
     \draw[->] (0,-8) -- (5,-8.2)
     node[above,sloped,pos=0.5]{ACK(seq=z+1,ack=w+1)};
+    %
+    \draw[decoration={brace,raise=4pt},decorate] (5,-0.5) -- node[right=6pt] {\rotatebox{-90}{\footnotesize 3-Wege-Handshake}} (5,-2.9);
 \end{tikzpicture}
 \end{minipage}
 %
