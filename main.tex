@@ -204,6 +204,7 @@
 Durch Leitungskodierung (Bsp. Manchesterkodierung) können Fehler erkannt, Gleichstromanteile vermieden und der Takt rückgewonnen werden.
 
 \subsubsection{Einfache Manchesterkodierung}
+\begin{samepage}
 \begin{minipage}{0.5\textwidth}
     Nach G.E. Thomas (wie in Übung): 
     \begin{description}
@@ -239,8 +240,10 @@ Durch Leitungskodierung (Bsp. Manchesterkodierung) können Fehler erkannt, Gleic
     \end{tikzpicture}
 \end{minipage}
 Der IEEE 802.3 Standard beschreibt genau die invertierte Form der hier beschriebenen Manchesterkodierung.
+\end{samepage}
 
 \subsubsection{Differentielle Manchesterkodierung}
+\begin{samepage}
 \begin{minipage}{0.5\textwidth}
     In der Mitte einer jeden Zeiteinheit findet eine Pegeländerung statt. Der Datenstrom wird wie folgt kodiert:
     \begin{description}[style=unboxed,leftmargin=0cm]
@@ -275,6 +278,7 @@ Der IEEE 802.3 Standard beschreibt genau die invertierte Form der hier beschrieb
             (4.25,-1.1)--(4.5,-1.1)--(4.5,-0.5)--(4.75,-0.5);
     \end{tikzpicture}
 \end{minipage}
+\end{samepage}
 
 \subsection{Multiplexing}
 \begin{description}
@@ -535,7 +539,9 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
 \end{minipage}
 
 \begin{description}
-    \item[Slow Start] Algorithmus zur Flusskontrolle bei TCP.
+    \item[Slow Start]
+    \begin{samepage}
+    Algorithmus zur Flusskontrolle bei TCP.
     \begin{enumerate}
         \item Fenstergröße := Segmentgröße
         \item Bei Erhalt eines ACKs gehe zu 2. und:
@@ -546,8 +552,11 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
         \end{itemize}
         \item Bei einem Timeout: Gehe zu 1.
     \end{enumerate}
+    \end{samepage}
     %
-    \item[Schiebefensterprotokoll] Effizienzsteigerung, indem man $F$ viele Pakete hintereinander versendet, ohne auf die Bestätigung des vorherigen Pakets warten zu müssen. (\textit{Stop-and-Wait ist wie ein Schiebefensterprotokoll mit $F = 1$})
+    \item[Schiebefensterprotokoll]
+    \begin{samepage}
+    Effizienzsteigerung, indem man $F$ viele Pakete hintereinander versendet, ohne auf die Bestätigung des vorherigen Pakets warten zu müssen. (\textit{Stop-and-Wait ist wie ein Schiebefensterprotokoll mit $F = 1$})
     \bigskip \\
     Bei Erhalt eines Pakets mit falscher Sequenznummer (Empfangs- = Sendereihenfolge!): \\
     \textbf{Go-Back-N:}
@@ -561,6 +570,7 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
         \item Empfänger speichert das Paket zwischen und sendet ein ACK mit der Sequenznummer des ersten fehlenden Pakets an den Sender
         \item Nach einem Timeout wird das Paket mit dieser Sequenznummer erneut gesendet
     \end{itemize}
+    \end{samepage}
 \end{description}
 
 \section{Performance}
@@ -579,7 +589,9 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
     %
     \textit{(Im weiteren wird die Kombination einer Teilmenge aus Host, Subdomain, Domain und TLD als \host bezeichnet.)}
     %
-    \item[DNS (\textit{Domain Name System})] System zum Auflösen von {\host}s zu IPs.
+    \item[DNS (\textit{Domain Name System})]
+    \begin{samepage}
+    System zum Auflösen von {\host}s zu IPs.
     \begin{itemize}
         \item Client sendet Ziel-\host an den lokalen DNS-Server
         \item Lokaler DNS-Server befragt den Root-DNS-Server nach dem \host
@@ -599,6 +611,7 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
         \item Lokaler DNS-Server sendet die Ziel-IP an den Client
         \item \textit{Jeder DNS-Server kann die Antworten übergeordneter DNS-Server cachen}
     \end{itemize}
+    \end{samepage}
 \end{description}
 
 \begin{tabular}{>{\tt}l>{\tt}l>{\tt}l>{\tt}l>{\tt}l}
@@ -652,15 +665,19 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
     exactly-once & Neusenden & ja & Neusenden
 \end{tabular}
 
+\begin{samepage}
 \begin{itemize}
     \item \textbf{A}tomicity: Transaktionen werden ganz oder gar nicht ausgeführt.
     \item \textbf{C}onsistency: Transaktionen führen von konsistenten Zuständen wieder zu konsistenten Zuständen.
     \item \textbf{I}solation: Parallele Transaktionen beeinflussen sich nicht gegenseitig.
     \item \textbf{D}urability: Erfolgreiche Transaktionen werden persistiert.
 \end{itemize}
+\end{samepage}
 
 \begin{description}
-    \item[2PC (\textit{2-Phase Commit Protocol})] Protokoll zur Umsetzung von \textit{ACID} in verteilten Systemen.
+    \item[2PC (\textit{2-Phase Commit Protocol})]
+    \begin{samepage}
+    Protokoll zur Umsetzung von \textit{ACID} in verteilten Systemen.
     \begin{enumerate}
         \item Voting-Phase:
         \begin{itemize}
@@ -676,6 +693,7 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
             \item Jeder Teilnehmer sendet \texttt{ACK} zum Koordinator
         \end{itemize}
     \end{enumerate}
+    \end{samepage}
     %
     \item[SOAP (\textit{Simple Object Access Protocol})] Protokoll zum Arbeiten mit Ressourcen auf Webservern. Es nutzt HTTP mit einem XML-Body.
     %
@@ -685,7 +703,9 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
 \section{Mobile Computing}
 
 \begin{description}
-    \item[Zellulares Netzwerk] Das Frequenzband wird in unterschiedliche Teilfrequenzen aufgeteilt. Nachbarzellen nutzen andere Teilfrequenzen zur Vermeidung von Interferenzen. Das entstehende Muster (\textit{Cluster}) wird wiederholt.
+    \item[Zellulares Netzwerk]
+    \begin{samepage}
+    Das Frequenzband wird in unterschiedliche Teilfrequenzen aufgeteilt. Nachbarzellen nutzen andere Teilfrequenzen zur Vermeidung von Interferenzen. Das entstehende Muster (\textit{Cluster}) wird wiederholt.
     %
     \begin{itemize}
         \item Je größer die Zelle, desto weniger Kanäle pro Fläche
@@ -693,8 +713,11 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
         \item $R \ldots \text{Radius der Zelle}$, Interferenzradius = $5R$
         \item $D = R \cdot \sqrt{3k} \hs{1cm} D \ldots \text{Abstand Basisstationen gleicher Zellen}, k \ldots \text{Anzahl der Zelltypen}$
     \end{itemize}
+    \end{samepage}
     %
-    \item[DHCP (\textit{Dynamic Host Configuration Protocol})] Protokoll zum automatischen Verteilen von IP-Adressen und Parametern wie DNS-Servern und Gateways.
+    \item[DHCP (\textit{Dynamic Host Configuration Protocol})]
+    \begin{samepage}
+    Protokoll zum automatischen Verteilen von IP-Adressen und Parametern wie DNS-Servern und Gateways.
     \begin{enumerate}
         \item Client sendet \texttt{DHCPDISCOVER} als Broadcast und erhält \texttt{DHCPOFFER}
         \item Client sendet \texttt{DHCPREQUEST} an einen der DHCP-Server und erhält \texttt{DHCPACK} mit den Zeiten T (\textit{Lease time}) und T1 (\textit{50\% T}) T2 (\textit{87.5\% T})
@@ -703,8 +726,11 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
         \item Wenn Client \texttt{DHCPACK} erhält (3. oder 4.), werden T, T1 und T2 aktualisiert (gehe zu 3.)
         \item Wenn T abläuft oder der Client \texttt{DHCPNACK} erhält (3. oder 4.), verliert er die IP und bricht den Netzwerkverkehr ab (gehe 1.)
     \end{enumerate}
+    \end{samepage}
     %
-    \item[Mobile IP] Protokoll um mobile Internetnutzer über eine statische IP adressieren zu können.
+    \item[Mobile IP]
+    \begin{samepage}
+    Protokoll um mobile Internetnutzer über eine statische IP adressieren zu können.
     \begin{itemize}
         \item Jeder \textit{Mobile Host} (MH) ist bei einem \textit{Home Agent} (HA) angemeldet
         \item Der HA bildet die statische IP (\textit{Home Address}) auf die dynamische \textit{Care-of Address} (COA) des MH ab
@@ -721,6 +747,7 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
         \item MH meldet sich beim HA mit seiner IP (COA) an (MH braucht eine eindeutige IP)
         \item MA kann nun Pakete an die \textit{Home Address} an den MH weiterleiten
     \end{itemize}
+    \end{samepage}
 \end{description}
 
 \end{document}
