@@ -499,6 +499,8 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
     }
     \item[IPv6:] 128 bit
 \end{description}
+
+\subsubsection{Classless Inter-Domain Routing (CIDR)}
 \begin{tikzpicture}[
     node distance=-\pgflinewidth,
     ttt/.style={inner sep=0.1,outer sep=0, font=\tt\footnotesize},
@@ -531,9 +533,55 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
     \draw[->] ($(ip.south) + (0,-0.2)$) |- (ipl.west);
 \end{tikzpicture}
 
-\begin{center}
-    TODO: IP-Paket zeichnen
-\end{center}
+\subsubsection{IPv4-Paket}
+\begin{tikzpicture}[
+            block/.style={rectangle, draw=black!50, thick, align=center, font=\tiny, minimum height=0.8cm},
+            node distance=-\pgflinewidth,
+        ]
+        \node[block] (ver) {Version\\(4 bit)};
+        \node[block, right=of ver] (ihl) {IHL\\(4 bit)};
+        \node[block, right=of ihl] (tos) {ToS\\(8 bit)};
+        \node[block, right=of tos] (tl) {TL\\(16 bit)};
+        \node[block, right=of tl] (id) {ID\\(16 bit)};
+        \node[block, right=of id] (fl) {Flags\\(3 bit)};
+        \node[block, right=of fl] (fo) {FO\\(13 bit)};
+        \node[block, right=of fo] (ttl) {TTL\\(8 bit)};
+        \node[block, right=of ttl] (prot) {Protocol\\(8 bit)};
+        \node[block, right=of prot] (hc) {HC\\(16 bit)};
+        \node[block, right=of hc] (src) {Src\\(32 bit)};
+        \node[block, right=of src] (dst) {Dst\\(32 bit)};
+        \node[block, right=of dst] (op) {Options/\\Padding};
+        \node[block, right=of op] (pl) {Payload};
+\end{tikzpicture}
+
+\vspace{5mm}
+\begin{minipage}{0.45\textwidth}
+    \begin{description}
+        \item[Version:] \textbf{IPv4}/IPv6
+        \item[IHL:] Header Länge
+        \item[ToS:] Type of Service (Bandbreiten-, Zuverlässigkeitsanforderungen, etc.)
+        \item[TL:] Total Length
+        \item[ID:] Eindeutige ID zu zusammensetzen fragmentierter Pakete
+        \item[Flags:]\hfill
+        \begin{description}
+            \item[Bit 0:] reserviert
+            \item[Bit 1:] Don't Fragment
+            \item[Bit 2:] More Fragments
+        \end{description}
+    \end{description}
+\end{minipage}
+\begin{minipage}{0.1\textwidth}
+\end{minipage}
+\begin{minipage}{0.45\textwidth}
+    \begin{description}
+        \item[FO:] Fragment Offset (bezogen auf 8-Oktett-Blöcke)
+        \item[TTL:] Time to Live (heute Anzahl der übrigen erlaubten Hops. Falls 0, so wird das Paket gedroppt.)
+        \item[Protocol:] Eingeschlossenes Protokoll
+        \item[HC:] Header Checksum
+        \item[Src:] Herkunftsadresse
+        \item[Dst:] Zieladresse
+    \end{description}
+\end{minipage}
 
 \section{Transportschicht}
 
