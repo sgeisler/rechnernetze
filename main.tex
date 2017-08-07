@@ -139,8 +139,7 @@
 \begin{align*}
     \text{SNR}_{\text{dB}} &= 10 \cdot \log_{10}(\text{SNR}) \hspace{5mm} \Rightarrow \hspace{5mm} \text{SNR} = 10^{\frac{\text{SNR}_{\text{dB}}}{10}}\\
     \text{IG} &= \log_2(\text{S})\\
-    f_g &\leq \frac{f_a}{2}\\
-    \text{SR} &= \frac{b}{\log_2(S)}
+    f_g &\leq \frac{f_a}{2} 
 \end{align*}
 \begin{description}
     \item[Nyquist-Theorem:] $b < 2\cdot B \cdot \log_2{\text{S}}$
@@ -408,9 +407,29 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
 
 \section{Vermittlungsschicht}
 \subsection{Dijkstra}
-\begin{center}
-    TODO: Algorithmus beschreiben
-\end{center}
+\begin{description}
+    \item[Dijkstra-Algorithmus] Algorithmus zur Ermittlung der kürzesten Pfade von einem Startknoten aus in (nicht-negativ) gewichtetem Graphen
+    \item[Gegeben] Graph mit gewichteten Kanten, Startknoten S
+    \begin{enumerate}
+        \item Knotenvorrat := \{S\}
+        \item aktiver Knoten := S
+        \item aktive Routen := \{(S-S; 0)\}
+        \item festgeschriebene Routen := $\emptyset$
+        \item Solange Knotenvorrat nicht leer:
+        \begin{itemize}
+        	\item Entferne kürzeste Route R aus aktiven Routen und füge R festgeschriebenen Routen hinzu
+        	\item Mache Ziel von R zum aktiven Knoten A und entferne A aus Knotenvorrat
+            \item Für jeden Knoten K, zu dem keine Route festgeschrieben ist, mit Kante zu A:
+            \begin{itemize}
+            	\item Füge K zum Knotenvorrat hinzu
+            	\item Füge (R-K; gewicht(R)$+$gewicht(A-K)) den aktiven Routen hinzu
+            \end{itemize}
+            \item Falls mehrere Pfade mit gleichem Ziel in Routen: entferne längere Pfade
+        \end{itemize}
+    \end{enumerate}
+    \item[Knotenausfall] Setze alle Kantengewichte am ausgefallenen Knoten auf $\infty$
+    \item[Ergebnis:] Baum mit Wurzel am Startknoten \textbf{(Sink Tree)}
+\end{description}
 
 \subsection{IP}
 \begin{description}
@@ -578,7 +597,6 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
                 \item Der letzte zuständige Server sendet dann die IP des {\host}s
             \end{itemize}
         \item Lokaler DNS-Server sendet die Ziel-IP an den Client
-        \item \textit{Jeder DNS-Server kann die Antworten übergeordneter DNS-Server cachen}
     \end{itemize}
 \end{description}
 
