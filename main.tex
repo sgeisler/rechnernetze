@@ -761,7 +761,16 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
 \begin{description}
     \item[Lauflängenkodierung] Wenn sich ein Byte mindestens $S$ mal wiederholt ($S \ldots \text{Schwellenwert}$), wird es wie folgt kodiert: \texttt{Byte | Marke | Anzahl - S}. Die anderen Bytes bleiben unverändert.
     %
-    \item[Huffman-Kodierung] Die zu kodierenden Zeichen werden nach Wahrscheinlichkeit aufsteigend geordnet. Nun werden immer die Elemente mit den niedrigsten Wahrscheinlichkeiten verbunden (\textit{neuer Baumknoten, Wahrscheinlichkeiten addieren}). Am Ende werden alle Rechtsabzweigungen mit einer Zahl (0 oder 1) beschriftet und alle Linksabzweigungen mit der jeweils anderen Zahl. Die Kodierung für ein Element sind die Beschriftungen auf dem Pfad von der Wurzel zum Element.
+    \item[Huffman-Kodierung] \hfill
+    \begin{samepage}
+    \begin{enumerate}
+        \item Zu kodierende Zeichen (\textit{Knoten}) ihrer Wahrscheinlichkeit nach aufsteigend ordnen
+        \item Die beiden Knoten mit den niedrigsten Wahrscheinlichkeiten zu einem neuen Knoten verbinden und die Wahrscheinlichkeiten addieren
+        \item Falls noch keine Wurzel entstanden ist: Gehe zu 2.
+        \item Beschrifte alle Rechtsabzweigungen mit einer Zahl (0 oder 1) und alle Linksabzweigungen mit der jeweils anderen Zahl
+        \item Kodierung eines Zeichens: Beschriftungen auf dem Pfad von de Wurzel zum Zeichen
+    \end{enumerate}
+    \end{samepage}
     %
     \item[SIP (\textit{Session Initiation Protocol})] Protokoll zum Aufbauen von VoIP-Sessions, meist über SIP-Proxys. Es verwendet das SDP (\textit{Session Description Protocol}), was eigentlich nur eine Beschreibungssprache und \textit{kein} Protokoll ist.
     %
