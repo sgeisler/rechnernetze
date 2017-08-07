@@ -145,8 +145,10 @@
     \item[Nyquist-Theorem:] $b < 2B \cdot \log_2(\text{S})$
     \item[Erweiterung durch Shannon:] $b < B \cdot \log_2(1 + \text{SNR})$
 \end{description}
+%
 \[
-    B > \frac{b}{\log_2(1+\text{SNR})} \text{ und } B > \frac{\text{SR}}{2} \Rightarrow B > \max(\frac{b}{\log_2(1+\text{SNR})}, \frac{\text{SR}}{2})
+    b < \min \Big( 2B \cdot \log_2(S), \hs{2mm} B \cdot \log_2(1 + SNR) \Big) \hs{1cm}
+    B > \max \Big( \frac{b}{2 \cdot \log_2(S)}, \hs{2mm} \frac{b}{\log_2(1+\text{SNR})} \Big)
 \]
 
 \subsection{Modulationsarten}
