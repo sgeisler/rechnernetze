@@ -352,6 +352,36 @@ Die Sicherungsschicht ist für \textit{Medium Access Control} (MAC; Medienzugrif
     \item[Cycling Redundancy Check (CRC)] r = grad g(x), r*0 Bits an Datenpolynom $P_D$ anhängen, $P_D x^r : g(x)$ $=>$ Rest an $P_D$ anhängen = Sendesequenz $P_E$ \\Kontrolle: $P_E$ : g(x) mit Rest = 0 $=>$ korrekte Übertragung
 \end{description}
 
+
+\subsection{Medienzugriff}
+
+\begin{description}
+    \item[(\textit{Pure}) ALOHA] Man sendet sofort wenn man kann.
+    %
+    \item[Slotted ALOHA] Man darf nur zu Beginn eines Zeitslots senden. Ansonsten muss man warten.
+    %
+    \begin{samepage}
+    \item[$p$-persistentes CSMA (\textit{Carrier-sense multiple access})] \hfill
+    \begin{enumerate}
+        \item Warte auf den nächsten Zeitslot
+        \item Lausche, ob andere gerade senden
+        \item Falls nicht, dann sende mit der Wahrscheinlichkeit $p$
+        \item Gehe zu 1.
+    \end{enumerate}
+    \end{samepage}
+    %
+    \begin{samepage}
+    \item[CSMA/CD (\textit{Carrier-sense multiple access with collision detection})] \hfill \\[10pt]
+        Wie CSMA, nur dass beim Senden (3.) eine Kollisionserkennung geschieht:
+        \begin{enumerate}[label=(\roman*)]
+        \item Lausche, ob andere auch senden
+        \item Falls ja, dann sende ab sofort das \textit{Jam-Signal} anstatt dem Frame bis die Mindestframelänge erreicht ist; danach gehe zu 1.
+        \item Gehe zu (i)
+    \end{enumerate}
+    Das Jam-Signal sorgt dafür, dass der CRC des Frames bei allen Empfängern fehlschlägt.
+    \end{samepage}
+\end{description}
+
 \subsection{Ethernet}
 {
 \renewcommand{\arraystretch}{1.5}
@@ -390,8 +420,6 @@ Die Sicherungsschicht ist für \textit{Medium Access Control} (MAC; Medienzugrif
 \end{description}
 
 \begin{description}
-    \item[CSMA/CD (\textit{Carrier-sense multiple access / collision detection})] Beim Senden lauscht man nach Signalen anderer Kommunikationsteilnehmer (Bus-Topologie). Hört man andere, sendet man Jam-Signal auf die Leitung, sodass das CRC des gesendeten Frames beim Empfänger fehlschlägt, und wartet eine zufällige Dauer bevor man das Senden erneut versucht.
-    %
     \item[Transparent Bridging] Auch Layer 2 Switching genannt. Switching Tabellen halten die Source empfangener Frames als Eintrag fest. Wenn ein gesuchter Eintrag nicht in der Tabelle ist, wird über alle Ports der Bridge Flooding betrieben. Die Antwort, in Form der Destination, wird in allen auf der Strecke liegenden Switch Tabellen nur festgehalten, wenn die Zieladresse erreicht wird. Es besteht die Gefahr für Zyklen durch Kreise im Netz.
     \item[Ethernet Flow Control] Wenn der sendende Computer schneller überträgt, als der Empfänger aufnehmen kann, werden Pause-Frames übertragen.
     \item[Store-and-forward] Die Switch puffert den gesamten Frame, checkt die Prüfsumme und schickt bei Beschädigung ein Signal zurück. Ansonsten wird der Frame anschließend weitergeleitet.
