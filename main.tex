@@ -440,11 +440,21 @@ Die Sicherungsschicht ist für \textit{Medium Access Control} (MAC; Medienzugrif
 \end{description}
 
 \begin{description}
-    \item[Transparent Bridging] Auch Layer 2 Switching genannt. Switching Tabellen halten die Source empfangener Frames als Eintrag fest. Wenn ein gesuchter Eintrag nicht in der Tabelle ist, wird über alle Ports der Bridge Flooding betrieben. Die Antwort, in Form der Destination, wird in allen auf der Strecke liegenden Switch Tabellen nur festgehalten, wenn die Zieladresse erreicht wird. Es besteht die Gefahr für Zyklen durch Kreise im Netz.
+    \item[Transparent Bridging] Layer-2-Switches speichern Switching-Tabellen, in denen MACs auf Ports abgebildet werden. Kreise im Netz führen zum Endlos-Switching.
+    \begin{enumerate}
+        \item Frame kommt an Port $i$ an
+        \item Falls \textit{Src-MAC} noch nicht in Tabelle ist: Bilde sie auf Port $i$ ab
+        \item Falls \textit{Dst-MAC} in Tabelle ist: Sende Frame über den eingetragenen Port $j$; gehe zu 1.
+        \item Sende Frame über alle Ports außer Port $i$ (\textit{Flooding}); gehe zu 1.
+    \end{enumerate}
+    %
     \item[Ethernet Flow Control] Wenn der sendende Computer schneller überträgt, als der Empfänger aufnehmen kann, werden Pause-Frames übertragen.
-    \item[Store-and-forward] Die Switch puffert den gesamten Frame, checkt die Prüfsumme und schickt bei Beschädigung ein Signal zurück. Ansonsten wird der Frame anschließend weitergeleitet.
-    \item[Cut-through] Die Switch puffert den Frame bis die Ziel-MAC gelesen wurde und sendet anschließend sofort den Frame weiter. Die Prüfsumme kann so nicht gecheckt werden. Die Latenz und Speicherlast ist jedoch geringer.
-    \item[Spanning Tree Protocol] Ports die beim Flooding zu Kreisen führen, werden gesperrt.
+    %
+    \item[Store-and-forward] Die Switch puffert den gesamten Frame, überprüft die Prüfsumme (CRC) und sendet bei Erfolg den Frame weiter. Ansonsten wird er verworfen.
+    %
+    \item[Cut-through] Die Switch puffert den Frame bis die Dst-MAC gelesen wurde und sendet ihn anschließend sofort weiter. Fehler werden erst beim Empfänger erkannt, aber die Übertragung ist schneller.
+    %
+    \item[Spanning Tree Protocol] Kreise im Netz werden ausfindig gemacht und durch Portabschaltungen aufgelöst.
 \end{description}
 
 \subsection{Funktechnologien}
