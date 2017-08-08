@@ -340,7 +340,7 @@ Der IEEE 802.3 Standard beschreibt genau die invertierte Form der hier beschrieb
 \end{description}
 
 \section{Sicherungsschicht}
-Die Sicherungsschicht ist für Medium Access Control und Logical Link Control zuständig. Dies beinhaltet Flusskontrolle, Rahmenbehadlung und Fehlerüberprüfung.
+Die Sicherungsschicht ist für \textit{Medium Access Control} (MAC; Medienzugriff) und \textit{Logical Link Control} (LLC; Flusskontrolle, Rahmenbildung und Fehlerüberprüfung).
 
 \subsection{Fehlererkennung und -korrektur}
 \begin{description}
@@ -358,18 +358,15 @@ Die Sicherungsschicht ist für Medium Access Control und Logical Link Control zu
     \begin{tabular}{l|c|l|l|l}
         \textbf{Standard} & \textbf{Geschwindigkeit} & \textbf{Mindestframelänge} & \textbf{SDL} & \textbf{IFG} \\
         \hline
-        Ethernet & $10\frac{\text{Mbit}}{\text{s}}$ & 64 Oktette & 8 Oktette & 12 Oktette \\
+        Ethernet & $10\frac{\text{Mbit}}{\text{s}}$ & 64 Oktette & 8 Oktette & $\geq 6$ Oktette \\
         Fast Ethernet & $100\frac{\text{Mbit}}{\text{s}}$ & 64 Oktette & 8 Oktette & 12 Oktette \\
         Gigabit Ethernet & $1\frac{\text{Gbit}}{\text{s}}$ & 512 Oktette & 8 Oktette & 8 Oktette \\
         10-Gigabit Ethernet & $10\frac{\text{Gbit}}{\text{s}}$ & 512 Oktette, kein CSMA/CD & 8 Oktette & $\geq 5$ Oktette
     \end{tabular}
 }
 %
-\begin{itemize}
-    \item Die \textit{Mindestframegröße} \footnote{Für genauere Informationen siehe \href{http://www.trincoll.edu/Academics/MajorsAndMinors/Engineering/Documents/IEEE\%20Standard\%20for\%20Ethernet.pdf}{IEEE 802.3}} wird für \textit{CSMA/CD} benötigt
-    \item SDL: Start Delimiter
-    \item IFG: Interframe Gap
-\end{itemize}
+\hfill \\
+\textit{SDL: Start Delimiter; IFG: Interframe Gap} \\
 %
 \begin{description}[style=unboxed,leftmargin=0cm]
     \item[Ethernet-Frame]\hfill\\
