@@ -421,26 +421,32 @@ Die Sicherungsschicht ist für \textit{Medium Access Control} (MAC; Medienzugrif
 \textit{SDL: Start Delimiter; IFG: Interframe Gap} \\
 %
 \begin{description}[style=unboxed,leftmargin=0cm]
-    \item[Ethernet-Frame]\hfill\\
+    \item[Ethernet-Paket (Layer 1) mit Ethernet-Frame (Layer 2)] \hfill \\[8pt]
     \begin{tikzpicture}[
         block/.style={rectangle, draw=black!50, thick, align=center, font=\tiny},
         node distance=-\pgflinewidth,
     ]
         \node[block, fill=black!10] (start) {Start Delimiter\\(8 Oktette)};
-        \node[right=of start, block] (dstmac) {Ziel MAC\\(6 Oktette)};
-        \node[right=of dstmac, block] (srcmac) {Absender MAC\\(6 Oktette)};
-        \node[right=of srcmac, block] (tag) {optional 802.1Q tag\\(4 Oktette)};
-        \node[right=of tag, block] (len) {Länge\\(2 Oktette)};
-        \node[right=of len, block] (data) {Daten\\(46-1500 Oktette)};
+        \node[right=of start, block] (dstmac) {Dst MAC\\(6 Oktette)};
+        \node[right=of dstmac, block] (srcmac) {Src MAC\\(6 Oktette)};
+        \node[right=of srcmac, block] (tag) {802.1Q VLAN Tag (i)\\(4 Oktette)};
+        \node[right=of tag, block] (len) {EtherType/Size (ii)\\(2 Oktette)};
+        \node[right=of len, block] (data) {Payload\\(46-1500 Oktette)};
         \node[right=of data, block] (crc) {CRC\\(4 Oktette)};
         \node[right=of crc, block, fill=black!10] (ifg) {Interframe Gap\\(12 Oktette)};
-
-        \draw[decoration={brace,raise=4pt, mirror},decorate] (dstmac.south west) -- node[below=6pt] {Layer 2} (crc.south east);
+        %
+        \draw[decoration={brace,raise=4pt, mirror},decorate] (dstmac.south west) -- node[below=6pt] {Layer 2 = Ethernet-Frame} (crc.south east);
         \draw[decoration={brace,raise=4pt, mirror},decorate] (start.south west) -- node[below=6pt] {Layer 1} ($(start.south east) + (-0.1,0)$);
         \draw[decoration={brace,raise=4pt, mirror},decorate] ($(ifg.south west) + (0.1,0)$) -- node[below=6pt] {Layer 1} (ifg.south east);
     \end{tikzpicture}
 \end{description}
-
+%
+\begin{enumerate}[label=(\roman*)]
+    \item VLAN-Tag ist optional
+    \item EtherType/Size $\leq 1500$: Länge des Payloads in Bytes \\
+        EtherType/Size $\geq 1536$: Typ des Frames \footnote{Die Lücke zwischen 1500 und 1536 ist kein Tippfehler und hat technische sowie historische Gründe.}
+\end{enumerate}
+%
 \begin{description}
     \item[Transparent Bridging] Layer-2-Switches speichern Switching-Tabellen, in denen MACs auf Ports abgebildet werden. Kreise im Netz führen zum Endlos-Switching.
     \begin{enumerate}
