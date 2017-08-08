@@ -480,16 +480,18 @@ Die Sicherungsschicht ist für \textit{Medium Access Control} (MAC; Medienzugrif
 \subsection{Funktechnologien}
 \begin{tabular}{l|c|c}
     & WiMAX & WLAN (IEEE 802.11) \\ \hline
-    OFDM & \multicolumn{2}{c}{ja} \\
-    MIMO & \multicolumn{2}{c}{ja} \\
-    Sendeleistung & sehr hohe Sendeleistung & geringe Sendeleistung \\
-    Medienzugriffsverfahren & sehr effizient  (Nutzer/Reichweite) & weniger effizient
+    Gemeinsamkeiten & \multicolumn{2}{c}{OFDM} \\
+    & \multicolumn{2}{c}{MIMO} \\ \hline
+    Reichweite & weit & nah \\
+    Anzahl Nutzer & hoch & gering \\
+    Sendeleistung & hoch & gering \\
+    Medienzugriffsverfahren & sehr effizient & weniger effizient
 \end{tabular}
 
 \begin{description}
-    \item[OFDMA]  Orthogonal Frequency Division Multiple Access, flexible Aufteilung von OFDM-Unterträgern (Kanäle abseits der Trägerfrequenz) auf Stationen 
-    \item[TDD (Time Division Duplex)] Station wechselt zwischen Senden und Empfangen auf einem Unterträger
-    \item[MIMO (Multiple Input Multiple Output)] Nutzung von N Sende- und N Empfangsantennen pro Gerät für N-fache Kanalkapazität. Hardwarekosten steigen durch komplizierte Kanalmatrixberechnung.
+    \item[OFDM (\textit{Orthogonal frequency-division multiplexing})] Digitaler Datenstrom wird auf mehreren Trägerfrequenzen übertragen.
+    %
+    \item[MIMO (\textit{Multiple-input and multiple-output})] Nutzung von n Sende- und n Empfangsantennen pro Gerät für n-fache Kanalkapazität. Hardwarekosten steigen durch komplizierte Kanalmatrixberechnung.
 \end{description}
 
 \subsection{Resilient Packet Ring (RPR)}
