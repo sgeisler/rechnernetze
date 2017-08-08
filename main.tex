@@ -662,6 +662,8 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
 
     \draw[decoration={brace,raise=2pt,mirror},decorate] (ip.south west) -- (ip.south east);
     \draw[->] ($(ip.south) + (0,-0.2)$) |- (ipl.west);
+    
+    \draw[decoration={brace,raise=2pt},decorate] (nms.north west) -- node[above=4pt] {Suffix} (nms.north east);
 \end{tikzpicture}
 
 \subsubsection{IPv4-Paket}
@@ -713,6 +715,57 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
         \item[Dst:] Zieladresse
     \end{description}
 \end{minipage}
+
+\subsection{Routing}
+\begin{description}
+    \item[Longest Prefix Match] Wenn die Ziel-IP mit mehreren Routing-Einträgen übereinstimmt, so wird der Eintrag mit dem längsten übereinstimmenden Präfix ausgewählt. Das kann erreicht werden, indem man den Eintrag mit der größten Netzmaske wählt.
+\end{description}
+
+\begin{tikzpicture}[
+    router/.style={
+        minimum height=1cm,
+        minimum width=1cm,
+        rectangle,
+        draw=black!50,
+        thick,
+        align=center
+    }
+]
+    \node [cloud, draw,cloud puffs=10,cloud puff arc=120, aspect=2, inner ysep=1em] (inet) {Internet};
+    \node[router, right= 3.5cm of inet] (r1) {Router};
+    \node[router, right=2.5cm of r1] (s1) {L2 Switch};
+    \node[router, above right=0.5cm and 0.75cm of s1] (c1) {Computer};
+    \node[router, right=0.75cm of s1] (c2) {Computer};
+    \node[router, below right=0.5cm and 0.75cm of s1] (c3) {Computer};
+    
+    \draw (inet) -- node[above right=0 and 0.5] {\ttfamily\tiny 141.76.4.16} node[below left=0 and -0.4] {\tt\tiny141.76.0.1} node[below right=0 and 0.7] {\tiny Port A} (r1);
+    \draw (r1) -- node[above left=0 and -0.1] {\tt\tiny 141.76.130.1} node[below left=0 and 0.25] {\tiny Port B} (s1);
+    \draw (s1) -- (c1);
+    \draw (s1) -- (c2);
+    \draw (s1) -- (c3);
+
+    \node[router, fill=white] (gw) at ($(inet.east) + (0.2, 0)$) {Gateway\\Router};        
+    \node[above=0 of s1] {\tt\tiny 141.76.130.0/24};
+    \node[above=0 of c1] {\tt\tiny 141.76.130.3};
+    \node[above=0 of c2] {\tt\tiny 141.76.130.42};
+    \node[above=0 of c3] {\tt\tiny 141.76.130.23};
+    
+    \node[below=0.25 of r1, rectangle, draw=black!50,] (rt) {
+        \footnotesize\tt
+        \begin{tabular}{lll}
+            C & 141.76.130.0/24 & Port B\\
+            C & 141.76.0.0/16 & Port A\\
+            S & 0.0.0.0/0 & 141.76.0.1
+        \end{tabular}
+    };
+    
+    \draw[decoration={brace,raise=2pt},decorate] (rt.north west) -- (rt.north east);
+\end{tikzpicture}
+\begin{description}
+    \item[C\textit{onnected}:] Das Subnetz liegt direkt am angegebenen Port an
+    \item[S\textit{tatic}:] Das Subnetz ist über das angegebene Gateway erreichbar
+    \item[D\textit{ynamic}:] Das Gateway wird dynamisch ermittelt (z.B. OSPF)
+\end{description}
 
 \section{Transportschicht}
 
