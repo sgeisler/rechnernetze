@@ -825,7 +825,7 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
 \begin{description}
     \item[Fairness] Alle Teilnehmer haben die gleiche Chance, heranzukommen.
     %
-    \item[Max-Min-Fairness] Jeder bekommt gleich viel\footnote{Der Algorithmus kann auch gewichtet angewandt werden, wobei jeder Teilnhmer in jedem Schritt anhand seiner Gewichtung Resourcen aus dem Topf zugeteilt bekommt.} aus dem Topf. Hat jemand mehr als er braucht, kommt der Überschuss wieder in den Topf. Dieser Algorithmus wird wiederholt bis alle gesättigt sind oder der Topf leer ist.
+    \item[Max-Min-Fairness] Jeder bekommt gleich viel\footnote{Oder gewichtet: Jeder bekommt $\frac{\text{eigenes Gewicht}}{\text{Summe aller Gewichte}}$ viel} aus dem Topf. Hat jemand mehr als er braucht, kommt der Überschuss wieder in den Topf. Dieser Algorithmus wird wiederholt bis alle gesättigt sind oder der Topf leer ist.
     %
     \item[Lastberechnung] $\text{Last}_{\text{neu}} = a \cdot \text{Last}_{\text{alt}} + (1 - a) \cdot \text{Last}_{\text{gemessen}} \hs{1cm} a \ldots \text{Anpassungsfaktor}$
     %
