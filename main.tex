@@ -829,7 +829,17 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
     %
     \item[Lastberechnung] $\text{Last}_{\text{neu}} = a \cdot \text{Last}_{\text{alt}} + (1 - a) \cdot \text{Last}_{\text{gemessen}} \hs{1cm} a \ldots \text{Anpassungsfaktor}$
     %
-    \item[Bandwidth Delay Product] $\text{BDP} = b \cdot \frac{d}{v} \hs{1cm} b \ldots \text{Bitrate}, d \ldots \text{Kabellänge}, v \ldots \text{Übertragunsgeschw.}$ 
+    \item[Bandwidth Delay Product] $\text{BDP} = b \cdot \frac{d}{v} \hs{1cm} b \ldots \text{Bitrate}, d \ldots \text{Kabellänge}, v \ldots \text{Übertragunsgeschw.}$
+    %
+    \begin{samepage}
+    \item[Worst-Case-Paketeffizienz mit $F = 64$] \hfill
+    \begin{itemize}
+        \item Fast Ethernet: \texttt{8 Byte SDL | 64 Byte Frame | 12 Byte IFG}
+        \item Gigabit: \texttt{8 Byte SDL | 64 Byte Frame | 448 Byte Padding | 8 Byte IFG}
+        \item Gigabit mit Bursting: \texttt{Padding} und \texttt{IFG} tauschen, um Bursting anzuzeigen; dann beliebig viele \footnote{Maximale Framelänge darf nicht überschritten werden: 1518 Bytes (normal) oder 8192 Bytes (Jumbo)} \texttt{8 Byte SDL | 64 Byte Frame | 8 Byte IFG} Blöcke anfügen.
+        \item $\eta_{\text{frame}} = \frac{\text{Framebytes}}{\text{Gesamtbytes}}$
+    \end{itemize}
+    \end{samepage}
 \end{description}
 
 \section{Internetdienste}
