@@ -495,10 +495,10 @@ Die Sicherungsschicht ist für \textit{Medium Access Control} (MAC; Medienzugrif
 \end{description}
 
 \subsection{Resilient Packet Ring (RPR)}
-Ein RPR besteht aus Teilnehmern, die über zwei gegenläufige, gerichtete Ringe verbunden sind. Durch den \textit{Doppelring} ist das Netzwerk auch bei Ausfall einer Verbindung weiterhin Funktionsfähig (Routing-Umschaltung innerhalb 50ms). Auf jedem Ring können mehrere Übertragungen gleichzeitig stattfinden (\textit{spatial reuse}). Bei Beginn einer Übertragung wird der komplette Pfad blockiert.
+Ein RPR besteht aus Teilnehmern, die über zwei gegenläufige, gerichtete Ringe verbunden sind. Durch den \textit{Doppelring} ist das Netzwerk auch bei Ausfall einer Verbindung weiterhin funktionsfähig (Routing-Umschaltung innerhalb 50ms). Auf jedem Ring können mehrere Übertragungen gleichzeitig stattfinden (\textit{spatial reuse}). Bei Beginn einer Übertragung wird der komplette Pfad blockiert.
 
 \subsection{Carrier Ethernet}
-Um zwischen Verschiedenen Standorten (z.B. größere Firmen) mehrere getrennte Layer 2 Netzwerke zu tunneln muss auch das Tunneln mehrerer VLANS möglich sein. Dies kann per Q-in-Q (äußere und innere VLAN-ID) oder MAC-in-MAC (ein Ethernetpaket in ein anderes Ethernetpaket einpacken) geschehen.
+Um zwischen verschiedenen Standorten (z.B. größere Firmen) mehrere getrennte Layer 2 Netzwerke zu tunneln, muss auch das Tunneln mehrerer VLANs möglich sein. Dies kann per Q-in-Q (äußere und innere VLAN-ID) oder MAC-in-MAC (ein Ethernetframe in ein anderes Ethernetpaket einpacken) geschehen.
 
 \begin{figure}[ht]
 \begin{minipage}[b]{0.45\textwidth}
@@ -512,14 +512,14 @@ Um zwischen Verschiedenen Standorten (z.B. größere Firmen) mehrere getrennte L
             \node[right=of tag, block] (len) {Länge};
             \node[right=of len, block] (data) {Daten:\\Layer 2 Paket};
             \node[right=of data, block] (crc) {CRC};
-            
+            %
             \node[block] (idstmac) at ($(dstmac.north) + (0.5,1)$) {Dst\\MAC};
             \node[right=of idstmac, block] (isrcmac) {Src\\MAC};
             \node[right=of isrcmac, block] (itag) {802.1Q\\tag};
             \node[right=of itag, block] (ilen) {Länge};
             \node[right=of ilen, block] (idata) {Daten};
             \node[right=of idata, block] (icrc) {CRC};
-            
+            %
             \draw (idstmac.south west) -- (data.north west);
             \draw (icrc.south east) -- (data.north east);
     \end{tikzpicture}
@@ -539,12 +539,12 @@ Um zwischen Verschiedenen Standorten (z.B. größere Firmen) mehrere getrennte L
             \node[right=of ivid, block] (len) {Länge};
             \node[right=of len, block] (data) {Daten};
             \node[right=of data, block] (crc) {CRC};
-            
+            %
             \node (vpidl) at ($(ovid.south east) + (0,-1)$) {VLAN Protocol ID};
             \draw[->] (vpidl) -- (ovpid.south);
             \draw[->] (vpidl) -- (ivpid.south);
     \end{tikzpicture}
-    \caption{QIEEE 802.1ad QinQ}
+    \caption{QIEEE 802.1ad Q-in-Q}
 \end{minipage}
 \end{figure}
 
@@ -821,8 +821,11 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
 
 \begin{description}
     \item[Fairness] Alle Teilnehmer haben die gleiche Chance, heranzukommen.
+    %
     \item[Max-Min-Fairness] Jeder bekommt gleich viel\footnote{Der Algorithmus kann auch gewichtet angewandt werden, wobei jeder Teilnhmer in jedem Schritt anhand seiner Gewichtung Resourcen aus dem Topf zugeteilt bekommt.} aus dem Topf. Hat jemand mehr als er braucht, kommt der Überschuss wieder in den Topf. Dieser Algorithmus wird wiederholt bis alle gesättigt sind oder der Topf leer ist.
+    %
     \item[Lastberechnung] $\text{Last}_{\text{neu}} = a \cdot \text{Last}_{\text{alt}} + (1 - a) \cdot \text{Last}_{\text{gemessen}} \hs{1cm} a \ldots \text{Anpassungsfaktor}$
+    %
     \item[Bandwidth Delay Product] $\text{BDP} = b \cdot \frac{d}{v} \hs{1cm} b \ldots \text{Bitrate}, d \ldots \text{Kabellänge}, v \ldots \text{Übertragunsgeschw.}$ 
 \end{description}
 
