@@ -696,7 +696,7 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
 
 \subsection{Routing}
 \begin{description}
-    \item[Longest Prefix Match] Wenn für die Ziel-IP mehrere passende Einträge in der Routingtabelle existieren, so wird derjenige mit dem größten Suffix gewählt
+    \item[Longest Prefix Match] Wenn die Ziel-IP mit mehreren Routing-Einträgen übereinstimmt, so wird der Eintrag mit dem längsten übereinstimmenden Präfix ausgewählt. Das kann erreicht werden, indem man den Eintrag mit der größten Netzmaske wählt.
 \end{description}
 
 \begin{tikzpicture}[
