@@ -726,6 +726,7 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
     \item[TCP (\textit{Transmission Control Protocol})] verbindungsbehaftetes Protokoll mit Ende-zu-Ende-Sicherung. Implementierung von \textit{Verbindungen}.
 \end{description}
 
+\begin{figure}[ht]
 \begin{minipage}{0.3\textwidth}
 \begin{tikzpicture}
     \draw (0,0.3) node[draw, minimum height=6mm, minimum width=16mm] {Initiator} (0,0) -- (0,-5);
@@ -757,11 +758,11 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
 \end{tikzpicture}
 \end{minipage}
 %
-\begin{minipage}{0.2\textwidth}
-    \hspace{1cm}
+\begin{minipage}{0.3\textwidth}
+    \hfill
 \end{minipage}
 %
-\begin{minipage}{0.3\textwidth}
+\begin{minipage}{0.35\textwidth}
 \begin{tikzpicture}
     \draw (0,0.3) node[draw, minimum height=6mm, minimum width=16mm] {Initiator} (0,0) -- (0,-3);
     \draw (5,0.3) node[draw, minimum height=6mm, minimum width=16mm] {Responder} (5,0) -- (5,-3);
@@ -776,7 +777,9 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
     node[above,sloped,pos=0.2]{DatReq}
     node[above,sloped,pos=0.8]{DatInd};
 \end{tikzpicture}
+\caption{Quality-of-Service mit dem Parameter $P$}
 \end{minipage}
+\end{figure}
 
 \begin{description}
     \item[Slow Start]
