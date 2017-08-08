@@ -1000,12 +1000,12 @@ Beide Technologien werden zur Bündelung mehrerer Datenströme (z.B. Telefonverb
     \begin{itemize}
         \item MH meldet sich beim \textit{Foreign Agent} (FA) mit seiner IP und seinem HA an
         \item FA meldet sich beim HA an mit dem MH und der IP des FA (COA)
-        \item MA kann nun Pakete an die \textit{Home Address} an den FA weiterleiten, der sie dann an den MH weiterleitet
+        \item HA kann nun Pakete an die \textit{Home Address} in Pakete vom HA zum FA verpacken und dorthin schicken; der FA packt sie aus und sendet sie zum MH
     \end{itemize}
     \textbf{Co-located COA:}
     \begin{itemize}
         \item MH meldet sich beim HA mit seiner IP (COA) an (MH braucht eine eindeutige IP)
-        \item MA kann nun Pakete an die \textit{Home Address} an den MH weiterleiten
+        \item HA kann nun Pakete an die \textit{Home Address} in Pakete vom HA zum MH (COA) verpacken; der MH packt sie selber aus
     \end{itemize}
     \end{samepage}
 \end{description}
