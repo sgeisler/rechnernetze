@@ -438,6 +438,7 @@ Die Sicherungsschicht ist für \textit{Medium Access Control} (MAC; Medienzugrif
         \draw[decoration={brace,raise=4pt, mirror},decorate] (dstmac.south west) -- node[below=6pt] {Layer 2 = Ethernet-Frame} (crc.south east);
         \draw[decoration={brace,raise=4pt, mirror},decorate] (start.south west) -- node[below=6pt] {Layer 1} ($(start.south east) + (-0.1,0)$);
         \draw[decoration={brace,raise=4pt, mirror},decorate] ($(ifg.south west) + (0.1,0)$) -- node[below=6pt] {Layer 1} (ifg.south east);
+        \draw[decoration={brace,raise=4pt},decorate] (start.north west) -- node[above=6pt] {Ethernet-Paket} (ifg.north east);
     \end{tikzpicture}
 \end{description}
 %
