@@ -383,26 +383,36 @@ Die Sicherungsschicht ist für \textit{Medium Access Control} (MAC; Medienzugrif
     \item[Slotted ALOHA] Man darf nur zu Beginn eines Zeitslots senden. Ansonsten muss man warten.
     %
     \begin{samepage}
-    \item[$p$-persistentes CSMA (\textit{Carrier-sense multiple access})] \hfill
+    \item[CSMA (\textit{Carrier-sense multiple access})] \hfill \\
+    \textbf{$p$-persistent CSMA}
     \begin{enumerate}
         \item Warte auf den nächsten Zeitslot
         \item Lausche, ob andere gerade senden
         \item Falls nicht, dann sende mit der Wahrscheinlichkeit $p$
         \item Gehe zu 1.
     \end{enumerate}
-    \end{samepage}
     %
-    \begin{samepage}
-    \item[CSMA/CD (\textit{Carrier-sense multiple access with collision detection})] \hfill \\[10pt]
-        Wie CSMA, nur dass beim Senden (3.) eine Kollisionserkennung geschieht:
+    \textbf{non-persistent CSMA}
+    \begin{enumerate}
+        \item Lausche, ob andere gerade senden
+        \item Falls nicht, dann sende und gehe zu 1.
+        \item Warte eine zufällige Dauer und gehe zu 1.
+    \end{enumerate}
+    \end{samepage}
+\end{description}
+%
+\begin{samepage}
+\begin{description}
+    \item[CSMA/CD (\textit{Carrier-sense multiple access with collision detection})] \hfill \\[8pt]
+        Wie \textit{non-persistent CSMA}, nur dass beim Senden (2.) eine Kollisionserkennung geschieht:
         \begin{enumerate}[label=(\roman*)]
         \item Lausche, ob andere auch senden
-        \item Falls ja, dann sende ab sofort das \textit{Jam-Signal} anstatt dem Frame bis die Mindestframelänge erreicht ist; danach gehe zu 1.
+        \item Falls ja, dann sende ab sofort das \textit{Jam-Signal} anstatt dem Frame bis die Mindestframelänge erreicht ist; danach gehe zu 3.
         \item Gehe zu (i)
     \end{enumerate}
     Das Jam-Signal sorgt dafür, dass der CRC des Frames bei allen Empfängern fehlschlägt.
-    \end{samepage}
 \end{description}
+\end{samepage}
 
 \subsection{Ethernet}
 {
