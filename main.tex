@@ -193,7 +193,74 @@
 \end{itemize}
 
 \subsection{Leitungskodierung}
-Durch Leitungskodierung (Bsp. Manchesterkodierung) können Fehler erkannt, Gleichstromanteile vermieden und der Takt rückgewonnen werden.
+\subsubsection{Non-Return-to-Zero}
+\begin{itemize}
+    \item Kodiert jede 1 mit hohem Pegel, jede 0 mit niedrigem Pegel
+    \item Netto-Datenrate = Bitrate (2 bit pro Periode)
+\end{itemize}
+
+\subsubsection{Non-Return-to-Zero Inverted / 4B5B}
+\begin{minipage}{0.45\textwidth}
+\begin{itemize}
+    \item NRZI kodiert:
+    \begin{description}
+        \item[0:] keine Pegeländerung
+        \item[1:] Pegeländerung
+    \end{description}
+    \item 4B/5B kodiert je 4~bit (Nibble) in 5~bit, nie mehr als 3 Nullen in Folge
+\end{itemize}
+\end{minipage}
+\begin{minipage}{0.1\textwidth}
+    \hfill
+\end{minipage}
+\begin{minipage}{0.45\textwidth}
+    \begin{tikzpicture}[
+        scale=0.9,
+        bold/.style={font=\bf}
+    ]
+        \node[anchor=east, bold] at (-0.1,0.15) {Daten};
+        \foreach \x [count = \xi] in {1,0,1,0, ,0,1,1,1, } {
+            \node[bold] at (\xi*0.5, 0.15) {\x};
+            \draw[dashed] (\xi*0.5-0.25,0)--(\xi*0.5-0.25,-2.2);
+        };
+        \foreach \x [count = \xi] in {1,0,1,1,0,0,1,1,1,1} {
+            \node[bold] at (\xi*0.5, -0.8) {\x};
+        };
+        \draw[dashed] (5.25,0)--(5.25,-2.2);
+        \node[anchor=east, bold] at (-0.1,-0.8) {4B5B};
+        \node[anchor=east, bold] at (-0.1,-1.8) {NRZI};
+
+        \draw[line width=0.5mm, draw=red]
+        (0,-2.1)--(0.25,-2.1)--(0.25,-1.5)--(1.25,-1.5)-- %1,0
+        (1.25,-2.1)--(1.75,-2.1)-- %1
+        (1.75,-1.5)--(3.25,-1.5)-- %100
+        (3.25,-2.1)--(3.75,-2.1)-- %1
+        (3.75,-1.5)--(4.25,-1.5)-- %1
+        (4.25,-2.1)--(4.75,-2.1)-- %1
+        (4.75,-1.5)--(5.25,-1.5) %1
+;
+    \end{tikzpicture}
+\end{minipage}
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|c|}
+        \hline
+        0 & 1 & 2 & 3 & 4 & 5 & 6 & 7\\
+        \hline
+        0000 & 0001 & 0010 & 0011 & 0100 & 0101 & 0110 & 0111\\
+        \hline
+        11110 & 01001 & 10100 & 10101 & 01010 & 01011 & 01110 & 01111\\
+        \hline\hline
+        8 & 9 & A & B & C & D & E & F\\
+        \hline
+        1000 & 1001 & 1010 & 1011 & 1100 & 1101 & 1110 & 1111\\
+        \hline
+        10010 & 10011 & 10110 & 10111 & 11010 & 11011 & 11100 & 11101\\
+        \hline
+    \end{tabular}
+    \label{tab:4b5b}
+    \caption{4B5B Code}
+\end{table}
 
 \subsubsection{Einfache Manchesterkodierung}
 \begin{samepage}
@@ -274,76 +341,12 @@ Der IEEE 802.3 Standard beschreibt genau die invertierte Form der hier beschrieb
             (4.25,-1.1)--(4.5,-1.1)--(4.5,-0.5)--(4.75,-0.5)--(4.75,-1.1)--(5,-1.1);
     \end{tikzpicture}
 \end{minipage}
+
+\vspace{5mm}
+Durch Leitungskodierungen wie z.B. die Manchesterkodierung können Fehler erkannt, Gleichstromanteile vermieden und der Takt rückgewonnen werden.
 \end{samepage}
 
-\subsubsection{Non-Return-to-Zero}
-\begin{itemize}
-    \item Kodiert jede 1 mit hohem Pegel, jede 0 mit niedrigem Pegel
-    \item Netto-Datenrate = Bitrate (2 bit pro Periode)
-\end{itemize}
 
-\subsubsection{Non-Return-to-Zero Inverted / 4B5B}
-\begin{table}[ht]
-    \centering
-    \begin{tabular}{|c|c|c|c|c|c|c|c|}
-        \hline
-        0 & 1 & 2 & 3 & 4 & 5 & 6 & 7\\
-        \hline
-        0000 & 0001 & 0010 & 0011 & 0100 & 0101 & 0110 & 0111\\
-        \hline
-        11110 & 01001 & 10100 & 10101 & 01010 & 01011 & 01110 & 01111\\
-        \hline\hline
-        8 & 9 & A & B & C & D & E & F\\
-        \hline
-        1000 & 1001 & 1010 & 1011 & 1100 & 1101 & 1110 & 1111\\
-        \hline
-        10010 & 10011 & 10110 & 10111 & 11010 & 11011 & 11100 & 11101\\
-        \hline
-    \end{tabular}
-    \label{tab:4b5b}
-    \caption{4B5B Code}
-\end{table}
-\begin{minipage}{0.45\textwidth}
-\begin{itemize}
-    \item NRZI kodiert:
-    \begin{description}
-        \item[0:] keine Pegeländerung
-        \item[1:] Pegeländerung
-    \end{description}
-    \item 4B/5B kodiert je 4~bit (Nibble) in 5~bit, nie mehr als 3 Nullen in Folge
-\end{itemize}
-\end{minipage}
-\begin{minipage}{0.1\textwidth}
-    \hfill
-\end{minipage}
-\begin{minipage}{0.45\textwidth}
-    \begin{tikzpicture}[
-        scale=0.9,
-        bold/.style={font=\bf}
-    ]
-        \node[anchor=east, bold] at (-0.1,0.15) {Daten};
-        \foreach \x [count = \xi] in {1,0,1,0, ,0,1,1,1, } {
-            \node[bold] at (\xi*0.5, 0.15) {\x};
-            \draw[dashed] (\xi*0.5-0.25,0)--(\xi*0.5-0.25,-2.2);
-        };
-        \foreach \x [count = \xi] in {1,0,1,1,0,0,1,1,1,1} {
-            \node[bold] at (\xi*0.5, -0.8) {\x};
-        };
-        \draw[dashed] (5.25,0)--(5.25,-2.2);
-        \node[anchor=east, bold] at (-0.1,-0.8) {4B5B};
-        \node[anchor=east, bold] at (-0.1,-1.8) {NRZI};
-
-        \draw[line width=0.5mm, draw=red]
-        (0,-2.1)--(0.25,-2.1)--(0.25,-1.5)--(1.25,-1.5)-- %1,0
-        (1.25,-2.1)--(1.75,-2.1)-- %1
-        (1.75,-1.5)--(3.25,-1.5)-- %100
-        (3.25,-2.1)--(3.75,-2.1)-- %1
-        (3.75,-1.5)--(4.25,-1.5)-- %1
-        (4.25,-2.1)--(4.75,-2.1)-- %1
-        (4.75,-1.5)--(5.25,-1.5) %1
-;
-    \end{tikzpicture}
-\end{minipage}
 \subsection{Multiplexing}
 \begin{description}
     \item[Synchrones Zeitmultiplexing:] Jeder Teilnehmer besitzt fest zugeordnete Zeitintervalle in denen er Nachrichten senden kann
