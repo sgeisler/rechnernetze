@@ -525,7 +525,9 @@ Die Sicherungsschicht ist für \textit{Medium Access Control} (MAC; Medienzugrif
 \end{description}
 
 \subsection{Resilient Packet Ring (RPR)}
-Ein RPR besteht aus Teilnehmern, die über zwei gegenläufige, gerichtete Ringe verbunden sind. Durch den \textit{Doppelring} ist das Netzwerk auch bei Ausfall einer Verbindung weiterhin funktionsfähig (Routing-Umschaltung innerhalb 50ms). Auf jedem Ring können mehrere Übertragungen gleichzeitig stattfinden (\textit{spatial reuse}). Bei Beginn einer Übertragung wird der komplette Pfad blockiert.
+Ein RPR besteht aus Teilnehmern, die über zwei gegenläufige, gerichtete Ringe verbunden sind. Das Netzwerk ist auch bei Ausfall einiger Verbindungen weiterhin funktionsfähig.
+\bigskip \\
+Eine Übertragung blockiert den gesamten Pfad. Ist dieser noch nicht frei, muss gewartet werden bis er frei wird. Es sind mehrere Übertragungen gleichzeitig möglich (\textit{spatial reuse}).
 
 \subsection{Carrier Ethernet}
 Um zwischen verschiedenen Standorten (z.B. größere Firmen) mehrere getrennte Layer 2 Netzwerke zu tunneln, muss auch das Tunneln mehrerer VLANs möglich sein. Dies kann per Q-in-Q (äußere und innere VLAN-ID) oder MAC-in-MAC (ein Ethernetframe in ein anderes Ethernetpaket einpacken) geschehen.
