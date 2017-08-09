@@ -581,7 +581,12 @@ Um zwischen verschiedenen Standorten (z.B. größere Firmen) mehrere getrennte L
 \end{figure}
 
 \subsection{Multiprotocol Label Switching (MPLS)}
-An Ingress-Routern erhalten Pakete anhand ihres Eingangsports und Zieladresse Label und werden anhand dieses Labels an die entsprechend nächste Switch weitergeleitet. An inneren Switchen werden Pakete anhand ihres Labels und Eingangsports weitergeleitet und umgelabelt. Label müssen auf einer Verbindung zwischen zwei Switchen eindeutig sein (Label~$\to$~weitere~Route). An Egress-Routern werden die Label der Pakete entfernt und die Pakete anschließend entsprechend ihres Labels weitergeroutet.
+\begin{description}
+    \item[Ingress-Router] labeln eingehende Pakete anhand ihrer Zieladresse und ihrer Herkunft
+    \item[Switche] routen Pakete anhand ihrer Label und labeln sie um.
+    \item[Egress-Router] entfernen Label von Paketen, sendet sie anhand dieser in externes Netz weiter.
+    \item[Label] bestimmen pro Punkt-zu-Punkt-Verbindung eindeutig die Route.
+\end{description}
 
 \subsection{SONET/SDH}
 \begin{description}
