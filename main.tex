@@ -119,33 +119,23 @@
 
 \section{Bitübertragungsschicht}
 \subsection{IKT-Wiederholung}
-\begin{minipage}[t]{0.5\textwidth}
-    \begin{description}
-        \item[SNR:] Signal-Rausch-Abstand
-        \item[SR:] Symbolrate
-        \item[S:] Symbolstufen
-        \item[IG:] Informationsgehalt
-    \end{description}
-\end{minipage}
-\begin{minipage}[t]{0.5\textwidth}
-    \begin{description}
-        \item[B:] Bandbreite
-        \item[$b$:] Bitrate
-        \item[$f_g$:] Grenzfrequenz
-        \item[$f_a$:] Abtastfrequenz
-    \end{description}
-\end{minipage}
-
 \begin{align*}
-    \text{SNR}_{\text{dB}} &= 10 \cdot \log_{10}(\text{SNR}) \hspace{5mm} \Rightarrow \hspace{5mm} \text{SNR} = 10^{\frac{\text{SNR}_{\text{dB}}}{10}}\\
+    &\textbf{SNR:} && \text{Signal-Rausch-Abstand (S-R-Verhältnis)} \hs{1cm} && \textbf{B:} && \text{Bandbreite} \\
+    &\textbf{SR:} && \text{Symbolrate} \hs{1cm} && b \textbf{:} && \text{Bitrate} \\
+    &\textbf{S:} && \text{Symbolstufen (Signalstufen)} \hs{1cm} && f_g \textbf{:} && \text{Grenzfrequenz} \\
+    &\textbf{IF:} && \text{Informationsgehalt} \hs{1cm} && f_a \textbf{:} && \text{Abtastfrequenz}
+\end{align*}
+%
+\begin{align*}
+    \text{SNR}_{\text{dB}} &= 10 \cdot \log_{10}(\text{SNR}) \iff \text{SNR} = 10^{\frac{\text{SNR}_{\text{dB}}}{10}}\\
     \text{IG} &= \log_2(\text{S})\\
-    f_a &> 2 \cdot f_g \\
     \text{SR} &= \frac{b}{\log_2(S)}\\
     b &= f_a \cdot \log_2(S)
 \end{align*}
 \begin{description}
-    \item[Nyquist-Theorem:] $b < 2B \cdot \log_2(\text{S})$
-    \item[Erweiterung durch Shannon:] $b < B \cdot \log_2(1 + \text{SNR})$
+    \item[Abtast-Theorem:] $f_a > 2 \cdot f_g$
+    \item[Nyquist-Theorem (\textit{,,Nyquist 1``}):] $b < 2B \cdot \log_2(\text{S})$
+    \item[Erweiterung durch Shannon (\textit{,,Nyquist 2``}):] $b < B \cdot \log_2(1 + \text{SNR})$
 \end{description}
 %
 \[
