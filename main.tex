@@ -418,14 +418,14 @@ Die Sicherungsschicht ist für \textit{Medium Access Control} (MAC; Medienzugrif
             \node at (-0.4,0.1*\y) {\footnotesize\y};
         };
 
-        \draw[line width=0.8mm,->] (0,0)-- node[below=0.5] {\footnotesize Last bezogen Auf Kanaldatenrate [\%]} (14,0);
+        \draw[line width=0.8mm,->] (0,0)-- node[below=0.5] {\footnotesize Last bezogen auf Kanaldatenrate [\%]} (14,0);
         \foreach \x in {0,10,...,130} {
             \node at (0.1*\x,-0.4) {\footnotesize\x};
         };
 
         \draw[gr] (0,0) .. controls (4,4) and (3,0) .. node[right=0.3, align=center] {Pure\\ALOHA} (6,0);
         \draw[gr] (0,0) .. controls (6 ,8) and (5,0) .. node[right=0.3, align=center] {Slotted\\ALOHA} (10,0);
-        \draw[gr] (0,0) .. controls (9,13) and (6,0) .. node[below right=1 and 0.8, align=center] {1-peristent\\CSMA} (12,0);
+        \draw[gr] (0,0) .. controls (9,13) and (6,0) .. node[below right=1 and 0.8, align=center] {1-persistent\\CSMA} (12,0);
         \draw[gr] (0,0) .. controls (12,18) and (8,0) .. node[below right=2.5 and 1.1, align=center] {0.5-persistent\\CSMA} (13.5,0);
         \draw[gr] (0,0) .. controls (5,8) and (12,6) .. node[above right=0 and 2.25, align=center] {non-persistent\\CSMA} (14,5.5);
     \end{tikzpicture}
